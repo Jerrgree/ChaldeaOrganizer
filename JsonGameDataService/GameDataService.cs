@@ -1,19 +1,20 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 using ChaldeaCommon.Interfaces;
 using ChaldeaCommon.Models;
 using Newtonsoft.Json;
 
 namespace JsonGameDataService
 {
-    public class GameDataService : IGameDataService
+    public class GameDataService : IDataService<GameData>
     {
         protected string fileLocation;
         public GameDataService(string fileLocation)
         {
             this.fileLocation = fileLocation;
         }
-        public GameData RetrieveData()
+        public Task<GameData> RetrieveData()
         {
             try
             {
@@ -21,32 +22,24 @@ namespace JsonGameDataService
                 using (var reader = new JsonTextReader(file))
                 {
                     var serializer = new JsonSerializer();
-                    return serializer.Deserialize<GameData>(reader);
+                    return Task.FromResult(serializer.Deserialize<GameData>(reader));
                 }
             }
             catch (FileNotFoundException)
             {
-
-                return new GameData();
+                return Task.FromResult(new GameData());
             }
         }
 
-        public bool SaveData(GameData data)
+        public Task<bool> SaveData(GameData data)
         {
-            try
-            {
-                using (var file = File.CreateText(fileLocation))
-                {
-                    var serializer = new JsonSerializer();
-                    serializer.Serialize(file, data);
-                }
-                return true;
-            }
-            catch (Exception)
-            {
 
-                throw;
+            using (var file = File.CreateText(fileLocation))
+            {
+                var serializer = new JsonSerializer();
+                serializer.Serialize(file, data);
             }
+            return Task.FromResult(true);
         }
     }
 }

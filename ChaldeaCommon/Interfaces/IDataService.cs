@@ -2,13 +2,14 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ChaldeaCommon.Interfaces
 {
-    public interface IGameDataService
+    public interface IDataService<T>
     {
-        GameData RetrieveData();
+        Task<T> RetrieveData();
 
-        bool SaveData(GameData data);
+        Task<bool> SaveData(T data);
     }
 }

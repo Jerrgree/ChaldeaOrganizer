@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using ChaldeaOrganizer.Data;
 using ChaldeaCommon.Interfaces;
 using JsonGameDataService;
+using ChaldeaCommon.Models;
 
 namespace ChaldeaOrganizer
 {
@@ -31,7 +32,7 @@ namespace ChaldeaOrganizer
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
-            services.AddSingleton<IGameDataService>(s => new GameDataService("Data/data.json"));
+            services.AddSingleton<IDataService<GameData>>(s => new GameDataService("Data/data.json"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
