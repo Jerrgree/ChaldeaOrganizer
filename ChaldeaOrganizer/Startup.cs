@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ChaldeaOrganizer.Data;
 using ChaldeaCommon.Interfaces;
-using JsonGameDataService;
+using JsonDataServices;
 using ChaldeaCommon.Models;
 
 namespace ChaldeaOrganizer

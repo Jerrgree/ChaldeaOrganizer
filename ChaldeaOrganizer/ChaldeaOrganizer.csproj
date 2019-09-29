@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ChaldeaCommon\ChaldeaCommon.csproj" />
-    <ProjectReference Include="..\JsonGameDataService\JsonGameDataService.csproj" />
+    <ProjectReference Include="..\JsonGameDataService\JsonDataServices.csproj" />
   </ItemGroup>
 
 </Project>

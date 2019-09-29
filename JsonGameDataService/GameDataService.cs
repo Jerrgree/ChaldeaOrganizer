@@ -5,7 +5,7 @@ using ChaldeaCommon.Interfaces;
 using ChaldeaCommon.Models;
 using Newtonsoft.Json;
 
-namespace JsonGameDataService
+namespace JsonDataServices
 {
     public class GameDataService : IDataService<GameData>
     {
@@ -28,29 +28,33 @@ namespace JsonGameDataService
             {
                 this.fileLocation = fileLocation;
             }
-            throw new FileNotFoundException($"{fileLocation} could not be located");
+            else
+            {
+                throw new FileNotFoundException($"{fileLocation} could not be located");
+            }
         }
 
         public Task<GameData> RetrieveData()
         {
-            using (var file = File.OpenText(fileLocation))
-            using (var reader = new JsonTextReader(file))
-            {
-                var serializer = new JsonSerializer();
-                var gameData = serializer.Deserialize<GameData>(reader);
-                // Initialize a new object if the file was empty
-                gameData ??= new GameData();
-                return Task.FromResult(gameData);
-            }
+            using var file = File.OpenText(fileLocation);
+            using var reader = new JsonTextReader(file);
+
+            var serializer = new JsonSerializer();
+            var gameData = serializer.Deserialize<GameData>(reader);
+            // Initialize a new object if the file was empty
+            gameData ??= new GameData();
+            return Task.FromResult(gameData);
         }
 
         public Task<bool> SaveData(GameData data)
         {
-            using (var file = File.CreateText(fileLocation))
+            using var file = File.CreateText(fileLocation);
+
+            var serializer = new JsonSerializer()
             {
-                var serializer = new JsonSerializer();
-                serializer.Serialize(file, data);
-            }
+                Formatting = Formatting.Indented
+            };
+            serializer.Serialize(file, data);
             return Task.FromResult(true);
         }
     }
