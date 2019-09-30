@@ -1,0 +1,39 @@
+﻿@page "/servants"
+
+@using ChaldeaCommon.Models;
+
+<h3>Servants</h3>
+
+<div style="padding:15px">
+    <div class="row">
+        @if (Servants != null)
+        {
+            foreach(var Servant in Servants)
+            {
+                //<ServantComponent 
+            }
+        }
+    </div>
+</div>
+
+@code {
+    List<Servant>
+    Servants;
+
+    protected override Task OnInitializedAsync()
+    {
+        // TODO: When Data Service branch is merged in, load from injected data service
+        Servants = Enumerable.Range(1, 5).Select(x => new Servant()
+        {
+            Name = x.ToString(),
+            Goals = Enumerable.Range(1, 4).Select(y => new Goal()
+            {
+                Name = y.ToString(),
+                Materials = new Dictionary<string, int>
+                ()
+            })
+        }).ToList();
+
+        return Task.FromResult(true);
+    }
+}
