@@ -7,7 +7,7 @@ namespace ChaldeaCommon.Models
     public class Servant
     {
         public string Name { get; set; }
-        public IEnumerable<Goal> Goals { get; set; }
+        public List<Goal> Goals { get; set; }
 
         public Servant()
         {
