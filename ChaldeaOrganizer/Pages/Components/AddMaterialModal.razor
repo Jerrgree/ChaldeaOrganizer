@@ -4,14 +4,25 @@
 @using BlazorStrap
 
 <BSModal IsOpen="@IsOpen" NoBackdrop="true" Class="@ModalClass">
-    <BSModalHeader>
+    <BSModalHeader OnClick="Cancel">
         New Material
     </BSModalHeader>
     <BSModalBody>
-        <div class="col-sm-12 col-md-8">
-
+        <div class="col-sm-8 col-md-8">
+            <div class="form-group">
+                <label>Item</label>
+                <BlazoredTypeahead SearchMethod="@SearchForMaterials"
+                                   @bind-Value="@material">
+                    <SelectedTemplate>
+                        @context.GetMaterialLabel()
+                    </SelectedTemplate>
+                    <ResultTemplate>
+                        <img src="/Assets/@(context).png" /> @context.GetMaterialLabel()
+                    </ResultTemplate>
+                </BlazoredTypeahead>
+            </div>
         </div>
-        <div class="col-sm-12 col-md-4">
+        <div class="col-sm-4 col-md-4">
             <div class="form-group">
                 <label>Quantity</label>
                 <input class="form-control" @bind="@quantity" />
@@ -31,6 +42,9 @@
     [Parameter]
     public Action<string, int> AddMaterialToGoal { get; set; }
 
+    [Parameter]
+    public Action CloseModal { get; set; }
+
     private string ModalClass => IsOpen ? "show" : "";
 
     private bool CannotAddMaterial => string.IsNullOrWhiteSpace(material) || quantity <= 0;
@@ -39,9 +53,11 @@
 
     private int quantity = 0;
 
-    protected IEnumerable<string> SearchForMaterials(string query)
+    protected Task<IEnumerable<string>> SearchForMaterials(string query)
     {
-        return Materials.GetMaterials().Where(x => x.ToLower().Contains(query) || x.GetMaterialLabel().ToLower().Contains(query));
+        query = query.ToLower();
+        return Task.FromResult(Materials.GetMaterials()
+            .Where(x => x.ToLower().Contains(query) || x.GetMaterialLabel().ToLower().Contains(query)));
     }
 
     protected void OnAddMaterialToGoal()
@@ -57,8 +73,7 @@
     {
         material = "";
         quantity = 0;
-        IsOpen = false;
 
-        StateHasChanged();
+        CloseModal?.Invoke();
     }
 }

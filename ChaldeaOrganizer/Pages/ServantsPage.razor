@@ -20,7 +20,9 @@
                                       DeleteServant="@RemoveServant"
                                       Inventory="@GameData.Inventory"
                                       CompleteGoal="@RemoveGoal"
-                                      ChangeInventoryMat="@ChangeInventoryMat" />
+                                      ChangeInventoryMat="@ChangeInventoryMat" 
+                                      AddMaterialToGoal="@OnAddMaterial"
+                                      />
                 </div>
             }
         }
@@ -107,6 +109,6 @@
     protected void OnAddMaterial(int servantIndex, int goalIndex, string material, int quantity)
     {
         GameData.Servants[servantIndex].Goals[goalIndex].Materials[material] = quantity;
-        //GameDataService.SaveData(GameData);
+        GameDataService.SaveData(GameData);
     }
 }

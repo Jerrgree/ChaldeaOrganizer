@@ -44,6 +44,7 @@
         <AddMaterialModal
                           IsOpen="@ShowModal"
                           AddMaterialToGoal="@OnAddMaterialToGoal"
+                          CloseModal="@CloseModal"
                           />
     </div>
 }
@@ -95,7 +96,13 @@
     void OnAddMaterialToGoal(string material, int quantity)
     {
         AddMaterialToGoal?.Invoke(Key, material, quantity);
+        ShowModal = false;
+        StateHasChanged();
+    }
 
+    void CloseModal()
+    {
+        ShowModal = false;
         StateHasChanged();
     }
 }
