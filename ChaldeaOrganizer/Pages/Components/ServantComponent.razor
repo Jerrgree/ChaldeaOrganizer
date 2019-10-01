@@ -33,7 +33,16 @@
             }
         </div>
         <div class="card-footer">
-
+            <form>
+                <div class="row">
+                    <div class="col-sm-12 md-8">
+                        <input type="text" class="form-control" @bind="@newGoalName" />
+                    </div>
+                    <div class="col-sm-12 col-md-4">
+                        <button type="button" class="btn btn-primary" @onclick="@OnAddGoal" disabled="@CannotAddGoal">New Goal</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 }
@@ -50,9 +59,27 @@
     public int Key { get; set; }
     #endregion
 
+    string newGoalName { get; set; } = "";
+
     void OnDeleteServant()
     {
         DeleteServant?.Invoke(Key);
+    }
+
+    private bool CannotAddGoal => Servant.Goals.Any(x => x.Name == newGoalName);
+
+    private void OnAddGoal()
+    {
+        if (!CannotAddGoal)
+        {
+            Servant.Goals.Add(new Goal()
+            {
+                Name = newGoalName,
+                Materials = new Dictionary<string, int>()
+            });
+
+            newGoalName = "";
+        }
     }
 
 }
