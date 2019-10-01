@@ -12,25 +12,34 @@
     <div class="row">
         @if (GameData.Servants != null)
         {
-            foreach((Servant servant, int i) in GameData.Servants.Select((servant, i) => (servant, i)))
+            foreach ((Servant servant, int i) in GameData.Servants.Select((servant, i) => (servant, i)))
             {
                 <div class="col-sm-12 col-md-6" style="padding-top:10px; padding-bottom:10px">
-                    <ServantComponent
-                                      Servant="@servant"
+                    <ServantComponent Servant="@servant"
                                       Key="@i"
                                       DeleteServant="@RemoveServant"
                                       Inventory="@GameData.Inventory"
                                       CompleteGoal="@RemoveGoal"
-                                      ChangeInventoryMat="@ChangeInventoryMat"
-                                      />
+                                      ChangeInventoryMat="@ChangeInventoryMat" />
                 </div>
             }
         }
+    </div>
+    <div class="row">
+         <div class="col-sm-12 col-md-8">
+             <input @bind="@newServantName" class="form-control" />
+         </div>
+        <div class="col-sm-12 col-md-4">
+            <button type="button" class="btn btn-secondary" disabled="@CannotAddNewServant" @onclick="@AddServant">New Servant</button>
+        </div>
     </div>
 </div>
 
 @code {
     GameData GameData;
+    string newServantName;
+
+    private bool CannotAddNewServant => string.IsNullOrWhiteSpace(newServantName) || GameData.Servants.Any(s => s.Name == newServantName);
 
     protected override async Task OnInitializedAsync()
     {
@@ -45,7 +54,7 @@
 
             StateHasChanged();
 
-            //GameDataService.SaveData(GameData);
+            GameDataService.SaveData(GameData);
         }
     }
 
@@ -59,9 +68,8 @@
                 GameData.Inventory[mat.Key] -= mat.Value;
             }
             GameData.Servants[servantIndex].Goals.RemoveAt(goalIndex);
-            StateHasChanged();
 
-            //GameDataService.SaveData(GameData);
+            GameDataService.SaveData(GameData);
         }
     }
 
@@ -72,6 +80,26 @@
         {
             GameData.Inventory[material] = value;
             StateHasChanged();
+            GameDataService.SaveData(GameData);
+        }
+    }
+
+    protected void AddServant()
+    {
+        if (!CannotAddNewServant)
+        {
+            var newServant = new Servant()
+            {
+                Goals = Enumerable.Range(1, 4).Select(x => new Goal()
+                {
+                    Name = $"Ascension {x}",
+                    Materials = new Dictionary<string, int>()
+                }).ToList(),
+                Name = newServantName
+            };
+
+            GameData.Servants.Add(newServant);
+            newServantName = "";
             //GameDataService.SaveData(GameData);
         }
     }

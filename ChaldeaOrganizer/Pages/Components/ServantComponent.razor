@@ -100,5 +100,7 @@
     void OnCompleteGoal(int index)
     {
         CompleteGoal?.Invoke(Key, index);
+
+        StateHasChanged();
     }
 }
