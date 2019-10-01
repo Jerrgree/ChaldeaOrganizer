@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChaldeaOrganizer", "Chaldea
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChaldeaCommon", "ChaldeaCommon\ChaldeaCommon.csproj", "{05A03DA4-570A-4696-982E-D87BE20A0B42}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonDataServices", "JsonGameDataService\JsonDataServices.csproj", "{0357EBF2-C8D2-4C78-9E94-175D583C9B14}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{05A03DA4-570A-4696-982E-D87BE20A0B42}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{05A03DA4-570A-4696-982E-D87BE20A0B42}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{05A03DA4-570A-4696-982E-D87BE20A0B42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0357EBF2-C8D2-4C78-9E94-175D583C9B14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0357EBF2-C8D2-4C78-9E94-175D583C9B14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0357EBF2-C8D2-4C78-9E94-175D583C9B14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0357EBF2-C8D2-4C78-9E94-175D583C9B14}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

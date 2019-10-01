@@ -9,6 +9,9 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ChaldeaCommon.Interfaces;
+using JsonDataServices;
+using ChaldeaCommon.Models;
 
 namespace ChaldeaOrganizer
 {
@@ -27,6 +30,7 @@ namespace ChaldeaOrganizer
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
+            services.AddSingleton<IDataService<GameData>>(s => new GameDataService("Data/data.json"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
