@@ -20,7 +20,9 @@
                         <td><img src="/Assets/@(material.Key).png" /></td>
                         <td>@material.Key.GetMaterialLabel()</td>
                         <td>@material.Value</td>
-                        <td>@Inventory[material.Key]</td>
+                        <td>
+                            <input type="number" class="form-control" value="@Inventory[material.Key]" @onchange="(eventargs) => OnInventoryChanged(material.Key, eventargs.Value)" />
+                        </td>
                     </tr>
                 }
             </tbody>
@@ -44,6 +46,7 @@
 
 
 @code {
+    #region Parameters
     [Parameter]
     public Goal Goal { get; set; }
 
@@ -56,6 +59,10 @@
     [Parameter]
     public Dictionary<string, int> Inventory { get; set; }
 
+    [Parameter]
+    public Action<string, int> ChangeInventoryMat { get; set; }
+
+    #endregion
     private bool CanCompleteGoal => Goal.Materials.Aggregate(true, (acc, x) => acc && Inventory[x.Key] >= x.Value);
 
     private bool CannotCompleteGoal => !CanCompleteGoal;
@@ -65,5 +72,14 @@
     void OnCompleteGoal()
     {
         CompleteGoal?.Invoke(Key);
+    }
+
+    void OnInventoryChanged(string material, object value)
+    {
+
+        if (int.TryParse(value.ToString(), out int num))
+        {
+            ChangeInventoryMat?.Invoke(material, num);
+        }
     }
 }

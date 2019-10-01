@@ -21,6 +21,7 @@
                                       DeleteServant="@RemoveServant"
                                       Inventory="@GameData.Inventory"
                                       CompleteGoal="@RemoveGoal"
+                                      ChangeInventoryMat="@ChangeInventoryMat"
                                       />
                 </div>
             }
@@ -60,6 +61,17 @@
             GameData.Servants[servantIndex].Goals.RemoveAt(goalIndex);
             StateHasChanged();
 
+            //GameDataService.SaveData(GameData);
+        }
+    }
+
+    protected void ChangeInventoryMat(string material, int value)
+    {
+        // Check that mat exists
+        if (value >= 0)
+        {
+            GameData.Inventory[material] = value;
+            StateHasChanged();
             //GameDataService.SaveData(GameData);
         }
     }
