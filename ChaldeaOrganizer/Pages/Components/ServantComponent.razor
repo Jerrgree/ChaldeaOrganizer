@@ -20,15 +20,15 @@
             {
                 <BSTabGroup>
                     <BSTabList>
-                        @for (int i = 0; i < Servant.Goals.Count; i++)
+                        @foreach((Goal goal, int i) in Servant.Goals.Select((goal, i) => ( goal, i )))
                         {
-                            var li = i; // local i, get an indexOutOfRange exception when just using i??
                             <BSTab>
-                                <BSTabLabel>@Servant.Goals[li].Name</BSTabLabel>
+                                <BSTabLabel>@goal.Name</BSTabLabel>
                                 <BSTabContent>
-                                    <GoalComponent Goal="@Servant.Goals[li]"
-                                                   Key="@li"
-                                                   CompleteGoal="@CompleteGoal" />
+                                    <GoalComponent Goal="@goal"
+                                                   Key="@i"
+                                                   CompleteGoal="@OnCompleteGoal"
+                                                   Inventory="@Inventory"/>
                                 </BSTabContent>
                             </BSTab>
                         }
@@ -62,6 +62,12 @@
 
     [Parameter]
     public int Key { get; set; }
+
+    [Parameter]
+    public Dictionary<string, int> Inventory { get; set; }
+
+    [Parameter]
+    public Action<int, int> CompleteGoal { get; set; }
     #endregion
 
     string newGoalName { get; set; } = "";
@@ -87,16 +93,12 @@
         }
     }
 
-    void CompleteGoal(int key)
+    void OnCompleteGoal(int index)
     {
-        if (key >= 0 && key < Servant.Goals.Count)
+        if (index >= 0 && index < Servant.Goals.Count)
         {
-            Servant.Goals.RemoveAt(key);
-            // TODO: Update inventory
-
-            StateHasChanged();
+            CompleteGoal?.Invoke(Key, index);
         }
 
     }
-
 }

@@ -20,7 +20,7 @@
                         <td><img src="/Assets/@(material.Key).png" /></td>
                         <td>@material.Key.GetMaterialLabel()</td>
                         <td>@material.Value</td>
-                        <td>Inventory Input placeholder</td>
+                        <td>@Inventory[material.Key]</td>
                     </tr>
                 }
             </tbody>
@@ -52,6 +52,9 @@
 
     [Parameter]
     public Action<int> CompleteGoal { get; set; }
+
+    [Parameter]
+    public Dictionary<string, int> Inventory { get; set; }
 
     void OnCompleteGoal()
     {

@@ -12,13 +12,15 @@
     <div class="row">
         @if (GameData.Servants != null)
         {
-            for (int i = 0; i < GameData.Servants.Count; i++)
+            foreach((Servant servant, int i) in GameData.Servants.Select((servant, i) => (servant, i)))
             {
                 <div class="col-sm-12 col-md-6" style="padding-top:10px; padding-bottom:10px">
                     <ServantComponent
-                                      Servant="@GameData.Servants[i]"
+                                      Servant="@servant"
                                       Key="@i"
                                       DeleteServant="@RemoveServant"
+                                      Inventory="@GameData.Inventory"
+                                      CompleteGoal="@RemoveGoal"
                                       />
                 </div>
             }
@@ -42,5 +44,11 @@
 
             StateHasChanged();
         }
+    }
+
+    protected void RemoveGoal(int servantIndex, int goalIndex)
+    {
+        GameData.Servants[servantIndex].Goals.RemoveAt(goalIndex);
+        StateHasChanged();
     }
 }
