@@ -11,31 +11,36 @@
                     <h5>@Servant.Name</h5>
                 </div>
                 <div class="col-sm-4">
-                    <button class="btn btn-danger float-right" type="button"><span class="oi oi-trash" aria-hidden="true" @onclick="@OnDeleteServant"/></button>
+                    <button class="btn btn-danger float-right" type="button"><span class="oi oi-trash" aria-hidden="true" @onclick="@OnDeleteServant" /></button>
                 </div>
             </div>
         </div>
         <div class="card-body">
             @if (Servant.Goals != null && Servant.Goals.Count > 0)
             {
-            <BSTabGroup>
-                <BSTabList>
-                    @foreach (var goal in Servant.Goals)
-                    {
-                        <BSTab>
-                            <BSTabLabel>@goal.Name</BSTabLabel>
-                            <BSTabContent><GoalComponent Goal="@goal" /></BSTabContent>
-                        </BSTab>
-                    }
-                </BSTabList>
-                <BSTabSelectedContent />
-            </BSTabGroup>
+                <BSTabGroup>
+                    <BSTabList>
+                        @for (int i = 0; i < Servant.Goals.Count; i++)
+                        {
+                            var li = i; // local i, get an indexOutOfRange exception when just using i??
+                            <BSTab>
+                                <BSTabLabel>@Servant.Goals[li].Name</BSTabLabel>
+                                <BSTabContent>
+                                    <GoalComponent Goal="@Servant.Goals[li]"
+                                                   Key="@li"
+                                                   CompleteGoal="@CompleteGoal" />
+                                </BSTabContent>
+                            </BSTab>
+                        }
+                    </BSTabList>
+                    <BSTabSelectedContent />
+                </BSTabGroup>
             }
         </div>
         <div class="card-footer">
             <form>
                 <div class="row">
-                    <div class="col-sm-12 md-8">
+                    <div class="col-sm-12 col-md-8">
                         <input type="text" class="form-control" @bind="@newGoalName" />
                     </div>
                     <div class="col-sm-12 col-md-4">
@@ -80,6 +85,18 @@
 
             newGoalName = "";
         }
+    }
+
+    void CompleteGoal(int key)
+    {
+        if (key >= 0 && key < Servant.Goals.Count)
+        {
+            Servant.Goals.RemoveAt(key);
+            // TODO: Update inventory
+
+            StateHasChanged();
+        }
+
     }
 
 }

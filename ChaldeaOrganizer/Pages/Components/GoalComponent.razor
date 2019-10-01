@@ -25,6 +25,20 @@
                 }
             </tbody>
         </table>
+        <div>
+            <div class="row">
+                <div class="col">
+                    <button type="button" class="btn btn-primary">
+                        Add Material
+                    </button>
+                </div>
+                <div class="col col-sm-6">
+                    <button type="button" class="btn btn-success float-right" @onclick="@OnCompleteGoal">
+                        Complete Goal
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 }
 
@@ -32,4 +46,15 @@
 @code {
     [Parameter]
     public Goal Goal { get; set; }
+
+    [Parameter]
+    public int Key { get; set; }
+
+    [Parameter]
+    public Action<int> CompleteGoal { get; set; }
+
+    void OnCompleteGoal()
+    {
+        CompleteGoal?.Invoke(Key);
+    }
 }
