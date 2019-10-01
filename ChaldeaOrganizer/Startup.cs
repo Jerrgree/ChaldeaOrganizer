@@ -29,7 +29,9 @@ namespace ChaldeaOrganizer
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
-            services.AddServerSideBlazor().AddCircuitOptions(options => { options.DetailedErrors = true; });
+            services.AddServerSideBlazor();
+            // For Development
+            //.AddCircuitOptions(options => { options.DetailedErrors = true; });
             services.AddSingleton<IDataService<GameData>>(s => new GameDataService("Data/data.json"));
         }
 

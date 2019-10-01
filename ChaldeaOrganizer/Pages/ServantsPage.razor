@@ -70,7 +70,7 @@
                 GameData.Inventory[mat.Key] -= mat.Value;
             }
             GameData.Servants[servantIndex].Goals.RemoveAt(goalIndex);
-
+            
             GameDataService.SaveData(GameData);
         }
     }
@@ -108,7 +108,11 @@
 
     protected void OnAddMaterial(int servantIndex, int goalIndex, string material, int quantity)
     {
-        GameData.Servants[servantIndex].Goals[goalIndex].Materials[material] = quantity;
-        GameDataService.SaveData(GameData);
+        if (GameData.Servants.ElementAtOrDefault(servantIndex) != null
+            && GameData.Servants[servantIndex].Goals.ElementAtOrDefault(goalIndex) != null)
+        {
+            GameData.Servants[servantIndex].Goals[goalIndex].Materials[material] = quantity;
+            GameDataService.SaveData(GameData);
+        }
     }
 }
