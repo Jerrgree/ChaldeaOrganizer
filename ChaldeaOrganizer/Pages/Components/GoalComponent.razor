@@ -5,7 +5,7 @@
 {
     <div>
         <table class="table table-bordered table-hover">
-            <thead>
+            <thead class="@tableclass">
                 <tr>
                     <th>@Goal.Name</th>
                     <th>Material</th>
@@ -33,7 +33,7 @@
                     </button>
                 </div>
                 <div class="col col-sm-6">
-                    <button type="button" class="btn btn-success float-right" @onclick="@OnCompleteGoal">
+                    <button type="button" class="btn btn-success float-right" @onclick="@OnCompleteGoal" disabled="@CannotCompleteGoal">
                         Complete Goal
                     </button>
                 </div>
@@ -55,6 +55,12 @@
 
     [Parameter]
     public Dictionary<string, int> Inventory { get; set; }
+
+    private bool CanCompleteGoal => Goal.Materials.Aggregate(true, (acc, x) => acc && Inventory[x.Key] >= x.Value);
+
+    private bool CannotCompleteGoal => !CanCompleteGoal;
+
+    private string tableclass => CanCompleteGoal ? "table-success" : "table-danger";
 
     void OnCompleteGoal()
     {

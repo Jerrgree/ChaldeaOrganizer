@@ -95,10 +95,6 @@
 
     void OnCompleteGoal(int index)
     {
-        if (index >= 0 && index < Servant.Goals.Count)
-        {
-            CompleteGoal?.Invoke(Key, index);
-        }
-
+        CompleteGoal?.Invoke(Key, index);
     }
 }
