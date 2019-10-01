@@ -1,0 +1,34 @@
+﻿@using ChaldeaCommon.Models
+
+@if (Goal != null && Goal.Materials != null)
+{
+    <div>
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>@Goal.Name</th>
+                    <th>Material</th>
+                    <th>Needed</th>
+                    <th>Owned</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var material in Goal.Materials)
+                {
+                    <tr>
+                        <td><img src="/Assets/@(material.Key).png" /></td>
+                        <td>@material.Key</td>
+                        <td>@material.Value</td>
+                        <td>Inventory Input placeholder</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+
+@code {
+    [Parameter]
+    public Goal Goal { get; set; }
+}

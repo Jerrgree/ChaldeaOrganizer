@@ -1,5 +1,6 @@
 ﻿@using ChaldeaCommon.Models;
 @using BlazorStrap;
+@using ChaldeaOrganizer.Pages.Components;
 
 @if (Servant != null)
 {
@@ -23,7 +24,7 @@
                     {
                         <BSTab>
                             <BSTabLabel>@goal.Name</BSTabLabel>
-                            <BSTabContent>@goal.Name</BSTabContent>
+                            <BSTabContent><GoalComponent Goal="@goal" /></BSTabContent>
                         </BSTab>
                     }
                 </BSTabList>

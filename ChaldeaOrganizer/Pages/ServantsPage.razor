@@ -9,7 +9,7 @@
     <div class="row">
         @if (Servants != null)
         {
-            foreach(var Servant in Servants)
+            foreach (var Servant in Servants)
             {
                 <ServantComponent Servant="@Servant" />
             }
@@ -32,6 +32,9 @@
                 Name = $"Ascension {y}",
                 Materials = new Dictionary<string, int>
                 ()
+            {
+                    { "Fang", 5 }
+            }
             }).ToList()
         }).ToList();
 

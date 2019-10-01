@@ -9,6 +9,80 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\Assets\ArcherMonument.png" />
+    <None Include="wwwroot\Assets\ArcherPiece.png" />
+    <None Include="wwwroot\Assets\AssassinMonument.png" />
+    <None Include="wwwroot\Assets\AssassinPiece.png" />
+    <None Include="wwwroot\Assets\Baby.png" />
+    <None Include="wwwroot\Assets\BerserkerMonument.png" />
+    <None Include="wwwroot\Assets\BerserkerPiece.png" />
+    <None Include="wwwroot\Assets\Bone.png" />
+    <None Include="wwwroot\Assets\CasterMonument.png" />
+    <None Include="wwwroot\Assets\CasterPiece.png" />
+    <None Include="wwwroot\Assets\Chain.png" />
+    <None Include="wwwroot\Assets\Claw.png" />
+    <None Include="wwwroot\Assets\Crystal.png" />
+    <None Include="wwwroot\Assets\Dust.png" />
+    <None Include="wwwroot\Assets\Fang.png" />
+    <None Include="wwwroot\Assets\Feather.png" />
+    <None Include="wwwroot\Assets\Fluid.png" />
+    <None Include="wwwroot\Assets\Gallstone.png" />
+    <None Include="wwwroot\Assets\Gear.png" />
+    <None Include="wwwroot\Assets\GemOfArcher.png" />
+    <None Include="wwwroot\Assets\GemOfAssassin.png" />
+    <None Include="wwwroot\Assets\GemOfBerserker.png" />
+    <None Include="wwwroot\Assets\GemOfCaster.png" />
+    <None Include="wwwroot\Assets\GemOfLancer.png" />
+    <None Include="wwwroot\Assets\GemOfRider.png" />
+    <None Include="wwwroot\Assets\GemOfSaber.png" />
+    <None Include="wwwroot\Assets\Grease.png" />
+    <None Include="wwwroot\Assets\Gunpowder.png" />
+    <None Include="wwwroot\Assets\Heart.png" />
+    <None Include="wwwroot\Assets\Horn.png" />
+    <None Include="wwwroot\Assets\Horseshoe.png" />
+    <None Include="wwwroot\Assets\Jewel.png" />
+    <None Include="wwwroot\Assets\Lamp.png" />
+    <None Include="wwwroot\Assets\LancerMonument.png" />
+    <None Include="wwwroot\Assets\LancerPiece.png" />
+    <None Include="wwwroot\Assets\Lantern.png" />
+    <None Include="wwwroot\Assets\Lanugo.png" />
+    <None Include="wwwroot\Assets\Magatama.png" />
+    <None Include="wwwroot\Assets\MagicGemOfArcher.png" />
+    <None Include="wwwroot\Assets\MagicGemOfAssassin.png" />
+    <None Include="wwwroot\Assets\MagicGemOfBerserker.png" />
+    <None Include="wwwroot\Assets\MagicGemOfCaster.png" />
+    <None Include="wwwroot\Assets\MagicGemOfLancer.png" />
+    <None Include="wwwroot\Assets\MagicGemOfRider.png" />
+    <None Include="wwwroot\Assets\MagicGemOfSaber.png" />
+    <None Include="wwwroot\Assets\Medal.png" />
+    <None Include="wwwroot\Assets\Page.png" />
+    <None Include="wwwroot\Assets\Permafrost.png" />
+    <None Include="wwwroot\Assets\Proof.png" />
+    <None Include="wwwroot\Assets\RiderMonument.png" />
+    <None Include="wwwroot\Assets\RiderPiece.png" />
+    <None Include="wwwroot\Assets\Ring.png" />
+    <None Include="wwwroot\Assets\Root.png" />
+    <None Include="wwwroot\Assets\SaberMonument.png" />
+    <None Include="wwwroot\Assets\SaberPiece.png" />
+    <None Include="wwwroot\Assets\Scale.png" />
+    <None Include="wwwroot\Assets\Scarab.png" />
+    <None Include="wwwroot\Assets\SecretGemOfArcher.png" />
+    <None Include="wwwroot\Assets\SecretGemOfAssassin.png" />
+    <None Include="wwwroot\Assets\SecretGemOfBerserker.png" />
+    <None Include="wwwroot\Assets\SecretGemOfCaster.png" />
+    <None Include="wwwroot\Assets\SecretGemOfLancer.png" />
+    <None Include="wwwroot\Assets\SecretGemOfRider.png" />
+    <None Include="wwwroot\Assets\SecretGemOfSaber.png" />
+    <None Include="wwwroot\Assets\Seed.png" />
+    <None Include="wwwroot\Assets\Shell.png" />
+    <None Include="wwwroot\Assets\Stake.png" />
+    <None Include="wwwroot\Assets\Steel.png" />
+    <None Include="wwwroot\Assets\Stinger.png" />
+    <None Include="wwwroot\Assets\Tearstone.png" />
+    <None Include="wwwroot\Assets\Wine.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="BlazorStrap" Version="1.0.101" />
   </ItemGroup>
 
