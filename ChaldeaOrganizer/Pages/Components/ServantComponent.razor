@@ -29,7 +29,9 @@
                                                    Key="@i"
                                                    CompleteGoal="@OnCompleteGoal"
                                                    Inventory="@Inventory"
-                                                   ChangeInventoryMat="@ChangeInventoryMat"/>
+                                                   ChangeInventoryMat="@ChangeInventoryMat"
+                                                   AddMaterialToGoal="@OnAddMaterialToGoal"
+                                                   />
                                 </BSTabContent>
                             </BSTab>
                         }
@@ -72,6 +74,9 @@
 
     [Parameter]
     public Action<string, int> ChangeInventoryMat { get; set; }
+
+    [Parameter]
+    public Action<int, int, string, int> AddMaterialToGoal { get; set; }
     #endregion
 
     string newGoalName { get; set; } = "";
@@ -102,5 +107,10 @@
         CompleteGoal?.Invoke(Key, index);
 
         StateHasChanged();
+    }
+
+    void OnAddMaterialToGoal(int goalIndex, string material, int quantity)
+    {
+        AddMaterialToGoal?.Invoke(Key, goalIndex, material, quantity);
     }
 }

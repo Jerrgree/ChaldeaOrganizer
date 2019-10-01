@@ -1,0 +1,64 @@
+﻿@using Blazored.Typeahead
+@using ChaldeaCommon.Extensions
+@using ChaldeaCommon.Data
+@using BlazorStrap
+
+<BSModal IsOpen="@IsOpen" NoBackdrop="true" Class="@ModalClass">
+    <BSModalHeader>
+        New Material
+    </BSModalHeader>
+    <BSModalBody>
+        <div class="col-sm-12 col-md-8">
+
+        </div>
+        <div class="col-sm-12 col-md-4">
+            <div class="form-group">
+                <label>Quantity</label>
+                <input class="form-control" @bind="@quantity" />
+            </div>
+        </div>
+    </BSModalBody>
+    <BSModalFooter>
+        <button type="button" @onclick="@Cancel" class="btn btn-danger">Cancel</button>
+        <button type="button" @onclick="@OnAddMaterialToGoal" class="btn btn-success" disabled="@CannotAddMaterial">Save</button>
+    </BSModalFooter>
+</BSModal>
+
+@code {
+    [Parameter]
+    public bool IsOpen { get; set; }
+
+    [Parameter]
+    public Action<string, int> AddMaterialToGoal { get; set; }
+
+    private string ModalClass => IsOpen ? "show" : "";
+
+    private bool CannotAddMaterial => string.IsNullOrWhiteSpace(material) || quantity <= 0;
+
+    private string material;
+
+    private int quantity = 0;
+
+    protected IEnumerable<string> SearchForMaterials(string query)
+    {
+        return Materials.GetMaterials().Where(x => x.ToLower().Contains(query) || x.GetMaterialLabel().ToLower().Contains(query));
+    }
+
+    protected void OnAddMaterialToGoal()
+    {
+        AddMaterialToGoal?.Invoke(material, quantity);
+
+        material = "";
+        quantity = 0;
+        IsOpen = false;
+    }
+
+    protected void Cancel()
+    {
+        material = "";
+        quantity = 0;
+        IsOpen = false;
+
+        StateHasChanged();
+    }
+}

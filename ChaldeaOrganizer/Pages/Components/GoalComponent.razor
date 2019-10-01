@@ -1,5 +1,5 @@
 ﻿@using ChaldeaCommon.Models
-@using ChaldeaOrganizer.Helpers
+@using ChaldeaCommon.Extensions
 
 @if (Goal != null && Goal.Materials != null)
 {
@@ -30,7 +30,7 @@
         <div>
             <div class="row">
                 <div class="col">
-                    <button type="button" class="btn btn-primary">
+                    <button type="button" class="btn btn-primary" @onclick="() => { ShowModal = true;  }">
                         Add Material
                     </button>
                 </div>
@@ -41,6 +41,10 @@
                 </div>
             </div>
         </div>
+        <AddMaterialModal
+                          IsOpen="@ShowModal"
+                          AddMaterialToGoal="@OnAddMaterialToGoal"
+                          />
     </div>
 }
 
@@ -62,12 +66,17 @@
     [Parameter]
     public Action<string, int> ChangeInventoryMat { get; set; }
 
+    [Parameter]
+    public Action<int, string, int> AddMaterialToGoal { get; set; }
+
     #endregion
     private bool CanCompleteGoal => Goal.Materials.Aggregate(true, (acc, x) => acc && Inventory[x.Key] >= x.Value);
 
     private bool CannotCompleteGoal => !CanCompleteGoal;
 
     private string tableclass => CanCompleteGoal ? "table-success" : "table-danger";
+
+    private bool ShowModal = false;
 
     void OnCompleteGoal()
     {
@@ -81,5 +90,12 @@
         {
             ChangeInventoryMat?.Invoke(material, num);
         }
+    }
+
+    void OnAddMaterialToGoal(string material, int quantity)
+    {
+        AddMaterialToGoal?.Invoke(Key, material, quantity);
+
+        StateHasChanged();
     }
 }
