@@ -11,7 +11,7 @@
                     <h5>@Servant.Name</h5>
                 </div>
                 <div class="col-sm-4">
-                    <button class="btn btn-danger float-right" type="button"><span class="oi oi-trash" aria-hidden="true" /></button>
+                    <button class="btn btn-danger float-right" type="button"><span class="oi oi-trash" aria-hidden="true" @onclick="@OnDeleteServant"/></button>
                 </div>
             </div>
         </div>
@@ -39,12 +39,20 @@
 }
 
 @code {
+    #region Parameters
     [Parameter]
     public Servant Servant { get; set; }
 
-    protected string ServantGoalId => $"{Servant.Name}_Goals";
+    [Parameter]
+    public Action<int> DeleteServant { get; set; }
 
-    protected string GoalId(Goal goal) => $"{Servant.Name}_{goal.Name}";
+    [Parameter]
+    public int Key { get; set; }
+    #endregion
 
-    protected string GoalTabId(Goal goal) => $"{GoalId(goal)}_tab";
+    void OnDeleteServant()
+    {
+        DeleteServant?.Invoke(Key);
+    }
+
 }

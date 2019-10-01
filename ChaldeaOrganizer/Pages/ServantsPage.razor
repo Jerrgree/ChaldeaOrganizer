@@ -12,9 +12,14 @@
     <div class="row">
         @if (GameData.Servants != null)
         {
-            foreach (var Servant in GameData.Servants)
+            for (int i = 0; i < GameData.Servants.Count; i++)
             {
-                <ServantComponent Servant="@Servant" />
+                <div class="col-sm-12 col-md-6" style="padding-top:10px; padding-bottom:10px">
+                    <ServantComponent
+                                      Servant="@GameData.Servants[i]"
+                                      Key="@i"
+                                      DeleteServant="@RemoveServant"/>
+                </div>
             }
         }
     </div>
@@ -26,5 +31,15 @@
     protected override async Task OnInitializedAsync()
     {
         GameData = await GameDataService.RetrieveData();
+    }
+
+    protected void RemoveServant(int index)
+    {
+        if (index >= 0 && index < GameData.Servants.Count)
+        {
+            GameData.Servants.RemoveAt(index);
+
+            StateHasChanged();
+        }
     }
 }
