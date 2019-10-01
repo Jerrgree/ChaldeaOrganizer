@@ -6,7 +6,10 @@
 
   <ItemGroup>
     <Folder Include="Data\" />
-    <Folder Include="Pages\Components\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BlazorStrap" Version="1.0.101" />
   </ItemGroup>
 
   <ItemGroup>

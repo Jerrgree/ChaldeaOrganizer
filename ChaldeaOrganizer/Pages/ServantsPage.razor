@@ -1,6 +1,7 @@
 ﻿@page "/servants"
 
 @using ChaldeaCommon.Models;
+@using ChaldeaOrganizer.Pages.Components;
 
 <h3>Servants</h3>
 
@@ -10,7 +11,7 @@
         {
             foreach(var Servant in Servants)
             {
-                //<ServantComponent 
+                <ServantComponent Servant="@Servant" />
             }
         }
     </div>
@@ -28,10 +29,10 @@
             Name = x.ToString(),
             Goals = Enumerable.Range(1, 4).Select(y => new Goal()
             {
-                Name = y.ToString(),
+                Name = $"Ascension {y}",
                 Materials = new Dictionary<string, int>
                 ()
-            })
+            }).ToList()
         }).ToList();
 
         return Task.FromResult(true);

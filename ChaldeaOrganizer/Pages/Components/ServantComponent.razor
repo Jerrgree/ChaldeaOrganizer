@@ -1,0 +1,49 @@
+﻿@using ChaldeaCommon.Models;
+@using BlazorStrap;
+
+@if (Servant != null)
+{
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-sm-8">
+                    <h5>@Servant.Name</h5>
+                </div>
+                <div class="col-sm-4">
+                    <button class="btn btn-danger float-right" type="button"><span class="oi oi-trash" aria-hidden="true" /></button>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            @if (Servant.Goals != null && Servant.Goals.Count > 0)
+            {
+            <BSTabGroup>
+                <BSTabList>
+                    @foreach (var goal in Servant.Goals)
+                    {
+                        <BSTab>
+                            <BSTabLabel>@goal.Name</BSTabLabel>
+                            <BSTabContent>@goal.Name</BSTabContent>
+                        </BSTab>
+                    }
+                </BSTabList>
+                <BSTabSelectedContent />
+            </BSTabGroup>
+            }
+        </div>
+        <div class="card-footer">
+
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public Servant Servant { get; set; }
+
+    protected string ServantGoalId => $"{Servant.Name}_Goals";
+
+    protected string GoalId(Goal goal) => $"{Servant.Name}_{goal.Name}";
+
+    protected string GoalTabId(Goal goal) => $"{GoalId(goal)}_tab";
+}
