@@ -48,6 +48,10 @@
 
     protected void RemoveGoal(int servantIndex, int goalIndex)
     {
+        foreach(var mat in GameData.Servants[servantIndex].Goals[goalIndex].Materials)
+        {
+            GameData.Inventory[mat.Key] -= mat.Value;
+        }
         GameData.Servants[servantIndex].Goals.RemoveAt(goalIndex);
         StateHasChanged();
     }
