@@ -2,14 +2,17 @@
 
 @using ChaldeaCommon.Models;
 @using ChaldeaOrganizer.Pages.Components;
+@using ChaldeaCommon.Interfaces;
+
+@inject IDataService<GameData> GameDataService
 
 <h3>Servants</h3>
 
 <div style="padding:15px">
     <div class="row">
-        @if (Servants != null)
+        @if (GameData.Servants != null)
         {
-            foreach (var Servant in Servants)
+            foreach (var Servant in GameData.Servants)
             {
                 <ServantComponent Servant="@Servant" />
             }
@@ -18,26 +21,10 @@
 </div>
 
 @code {
-    List<Servant>
-    Servants;
+    GameData GameData;
 
-    protected override Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
-        // TODO: When Data Service branch is merged in, load from injected data service
-        Servants = Enumerable.Range(1, 5).Select(x => new Servant()
-        {
-            Name = x.ToString(),
-            Goals = Enumerable.Range(1, 4).Select(y => new Goal()
-            {
-                Name = $"Ascension {y}",
-                Materials = new Dictionary<string, int>
-                ()
-            {
-                    { "Fang", 5 }
-            }
-            }).ToList()
-        }).ToList();
-
-        return Task.FromResult(true);
+        GameData = await GameDataService.RetrieveData();
     }
 }

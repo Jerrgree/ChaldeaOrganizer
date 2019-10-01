@@ -1,4 +1,5 @@
 ﻿@using ChaldeaCommon.Models
+@using ChaldeaOrganizer.Helpers
 
 @if (Goal != null && Goal.Materials != null)
 {
@@ -17,7 +18,7 @@
                 {
                     <tr>
                         <td><img src="/Assets/@(material.Key).png" /></td>
-                        <td>@material.Key</td>
+                        <td>@material.Key.GetMaterialLabel()</td>
                         <td>@material.Value</td>
                         <td>Inventory Input placeholder</td>
                     </tr>
