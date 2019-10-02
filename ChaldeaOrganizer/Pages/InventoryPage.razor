@@ -1,0 +1,66 @@
+﻿@page "/inventory"
+
+@using ChaldeaCommon.Models
+@using ChaldeaCommon.Interfaces
+@using ChaldeaCommon.Data
+@using ChaldeaOrganizer.Pages.Components
+
+@inject IDataService<GameData>  GameDataService
+
+<h3>Inventory</h3>
+
+<div class="row">
+    <div class="col col-sm-12 col-md-6">
+        @if (InventoryList1?.Count() > 0)
+        {
+            <InventoryComponent InventoryItems="@InventoryList1"
+                                UpdateInventory="UpdateInventory" />
+        }
+    </div>
+    <div class="col col-sm-12 col-md-6">
+        @if (InventoryList2?.Count() > 0)
+        {
+            <InventoryComponent InventoryItems="@InventoryList2"
+                                UpdateInventory="UpdateInventory" />
+        }
+    </div>
+</div>
+
+@code {
+    GameData GameData;
+
+    IEnumerable<KeyValuePair<string, int>> InventoryList1;
+    IEnumerable<KeyValuePair<string, int>> InventoryList2;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        GameData = await GameDataService.RetrieveData();
+        var materials = Materials.GetMaterials();
+
+        if (GameData.Inventory.Count() < materials.Count())
+        {
+            foreach (var material in materials)
+            {
+                if (!GameData.Inventory.ContainsKey(material))
+                {
+                    GameData.Inventory[material] = 0;
+                }
+            }
+
+            await GameDataService.SaveData(GameData);
+        }
+
+        var splitPoint = GameData.Inventory.Count / 2;
+
+        InventoryList1 = GameData.Inventory.Take(splitPoint);
+        InventoryList2 = GameData.Inventory.Skip(splitPoint);
+    }
+
+    protected void UpdateInventory(string material, int quantity)
+    {
+        GameData.Inventory[material] = quantity;
+
+        GameDataService.SaveData(GameData);
+    }
+}
