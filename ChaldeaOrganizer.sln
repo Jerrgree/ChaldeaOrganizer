@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChaldeaOrganizer", "Chaldea
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonDataServices", "JsonGameDataService\JsonDataServices.csproj", "{0357EBF2-C8D2-4C78-9E94-175D583C9B14}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChaldeaCommon", "ChaldeaCommon\ChaldeaCommon.csproj", "{1208C36B-8CFA-488E-8535-2FFD900D319A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChaldeaCommon", "ChaldeaCommon\ChaldeaCommon.csproj", "{1208C36B-8CFA-488E-8535-2FFD900D319A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
