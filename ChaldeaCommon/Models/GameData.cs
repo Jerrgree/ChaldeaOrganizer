@@ -13,7 +13,7 @@ namespace ChaldeaCommon.Models
         /// <summary>
         /// A list of owned servants
         /// </summary>
-        public IEnumerable<Servant> Servants { get; set; }
+        public List<Servant> Servants { get; set; }
 
         public GameData()
         {

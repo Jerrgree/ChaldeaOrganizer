@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using ChaldeaOrganizer.Data;
 using ChaldeaCommon.Interfaces;
 using JsonDataServices;
 using ChaldeaCommon.Models;
@@ -31,7 +30,8 @@ namespace ChaldeaOrganizer
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<WeatherForecastService>();
+            // For Development
+            //.AddCircuitOptions(options => { options.DetailedErrors = true; });
             services.AddSingleton<IDataService<GameData>>(s => new GameDataService("Data/data.json"));
         }
 

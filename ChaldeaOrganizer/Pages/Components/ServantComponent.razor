@@ -1,0 +1,116 @@
+﻿@using ChaldeaCommon.Models;
+@using BlazorStrap;
+@using ChaldeaOrganizer.Pages.Components;
+
+@if (Servant != null)
+{
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-sm-8">
+                    <h5>@Servant.Name</h5>
+                </div>
+                <div class="col-sm-4">
+                    <button class="btn btn-danger float-right" type="button"><span class="oi oi-trash" aria-hidden="true" @onclick="@OnDeleteServant" /></button>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            @if (Servant.Goals != null && Servant.Goals.Count > 0)
+            {
+                <BSTabGroup>
+                    <BSTabList>
+                        @foreach((Goal goal, int i) in Servant.Goals.Select((goal, i) => ( goal, i )))
+                        {
+                            <BSTab>
+                                <BSTabLabel>@goal.Name</BSTabLabel>
+                                <BSTabContent>
+                                    <GoalComponent Goal="@goal"
+                                                   Key="@i"
+                                                   CompleteGoal="@OnCompleteGoal"
+                                                   Inventory="@Inventory"
+                                                   ChangeInventoryMat="@ChangeInventoryMat"
+                                                   AddMaterialToGoal="@OnAddMaterialToGoal"
+                                                   />
+                                </BSTabContent>
+                            </BSTab>
+                        }
+                    </BSTabList>
+                    <BSTabSelectedContent />
+                </BSTabGroup>
+            }
+        </div>
+        <div class="card-footer">
+            <form>
+                <div class="row">
+                    <div class="col-sm-12 col-md-8">
+                        <input type="text" class="form-control" @bind="@newGoalName" />
+                    </div>
+                    <div class="col-sm-12 col-md-4">
+                        <button type="button" class="btn btn-primary" @onclick="@OnAddGoal" disabled="@CannotAddGoal">New Goal</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+}
+
+@code {
+    #region Parameters
+    [Parameter]
+    public Servant Servant { get; set; }
+
+    [Parameter]
+    public Action<int> DeleteServant { get; set; }
+
+    [Parameter]
+    public int Key { get; set; }
+
+    [Parameter]
+    public Dictionary<string, int> Inventory { get; set; }
+
+    [Parameter]
+    public Action<int, int> CompleteGoal { get; set; }
+
+    [Parameter]
+    public Action<string, int> ChangeInventoryMat { get; set; }
+
+    [Parameter]
+    public Action<int, int, string, int> AddMaterialToGoal { get; set; }
+    #endregion
+
+    string newGoalName { get; set; } = "";
+
+    void OnDeleteServant()
+    {
+        DeleteServant?.Invoke(Key);
+    }
+
+    private bool CannotAddGoal => Servant.Goals.Any(x => x.Name == newGoalName);
+
+    private void OnAddGoal()
+    {
+        if (!CannotAddGoal)
+        {
+            Servant.Goals.Add(new Goal()
+            {
+                Name = newGoalName,
+                Materials = new Dictionary<string, int>()
+            });
+
+            newGoalName = "";
+        }
+    }
+
+    void OnCompleteGoal(int index)
+    {
+        CompleteGoal?.Invoke(Key, index);
+
+        StateHasChanged();
+    }
+
+    void OnAddMaterialToGoal(int goalIndex, string material, int quantity)
+    {
+        AddMaterialToGoal?.Invoke(Key, goalIndex, material, quantity);
+    }
+}
