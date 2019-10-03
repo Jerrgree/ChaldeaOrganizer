@@ -1,6 +1,7 @@
-﻿@using ChaldeaCommon.Models;
-@using BlazorStrap;
-@using ChaldeaOrganizer.Pages.Components;
+﻿@using ChaldeaCommon.Models
+@using BlazorStrap
+@using ChaldeaOrganizer.Pages.Components
+@using ChaldeaCommon.Enums
 
 @if (Servant != null)
 {
@@ -9,6 +10,7 @@
             <div class="row">
                 <div class="col-sm-8">
                     <h5>@Servant.Name</h5>
+                    <ServantClassDropdown CurrentClass="@Servant.Class" ChangeData="@ChangeClass" />
                 </div>
                 <div class="col-sm-4">
                     <button class="btn btn-danger float-right" type="button"><span class="oi oi-trash" aria-hidden="true" @onclick="@OnDeleteServant" /></button>
@@ -77,6 +79,9 @@
 
     [Parameter]
     public Action<int, int, string, int> AddMaterialToGoal { get; set; }
+
+    [Parameter]
+    public Action SaveData { get; set; }
     #endregion
 
     string newGoalName { get; set; } = "";
@@ -112,5 +117,12 @@
     void OnAddMaterialToGoal(int goalIndex, string material, int quantity)
     {
         AddMaterialToGoal?.Invoke(Key, goalIndex, material, quantity);
+    }
+
+    void ChangeClass(ServantClass newClass)
+    {
+        Servant.Class = newClass;
+
+        SaveData?.Invoke();
     }
 }
