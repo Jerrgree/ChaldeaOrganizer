@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using ChaldeaCommon.Enums;
 
 namespace ChaldeaCommon.Models
 {
@@ -8,6 +9,7 @@ namespace ChaldeaCommon.Models
     {
         public string Name { get; set; }
         public List<Goal> Goals { get; set; }
+        public ServantClass? Class { get; set; }
 
         public Servant()
         {

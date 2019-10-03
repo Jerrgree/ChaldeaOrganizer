@@ -22,6 +22,7 @@
                                       CompleteGoal="@RemoveGoal"
                                       ChangeInventoryMat="@ChangeInventoryMat" 
                                       AddMaterialToGoal="@OnAddMaterial"
+                                      SaveData="@SaveGameData"
                                       />
                 </div>
             }
@@ -70,7 +71,7 @@
                 GameData.Inventory[mat.Key] -= mat.Value;
             }
             GameData.Servants[servantIndex].Goals.RemoveAt(goalIndex);
-            
+
             GameDataService.SaveData(GameData);
         }
     }
@@ -114,5 +115,10 @@
             GameData.Servants[servantIndex].Goals[goalIndex].Materials[material] = quantity;
             GameDataService.SaveData(GameData);
         }
+    }
+
+    protected void SaveGameData()
+    {
+        GameDataService.SaveData(GameData);
     }
 }
