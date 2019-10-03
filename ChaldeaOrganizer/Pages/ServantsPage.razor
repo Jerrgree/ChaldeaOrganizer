@@ -1,14 +1,21 @@
 ﻿@page "/servants"
 
-@using ChaldeaCommon.Models;
-@using ChaldeaOrganizer.Pages.Components;
-@using ChaldeaCommon.Interfaces;
+@using ChaldeaCommon.Models
+@using ChaldeaOrganizer.Pages.Components
+@using ChaldeaCommon.Interfaces
+@using ChaldeaCommon.Enums
 
 @inject IDataService<GameData> GameDataService
 
 <h3>Servants</h3>
 
 <div style="padding:15px">
+    <div class="row">
+        <ServantClassDropdown
+                              ChangeData="@SetFilter"
+                              CurrentClass="@FilterClass"/>
+        <button class="btn btn-secondary" @onclick="@ClearFilter">Clear</button>
+    </div>
     <div class="row">
         @if (GameData.Servants != null)
         {
@@ -20,18 +27,17 @@
                                       DeleteServant="@RemoveServant"
                                       Inventory="@GameData.Inventory"
                                       CompleteGoal="@RemoveGoal"
-                                      ChangeInventoryMat="@ChangeInventoryMat" 
+                                      ChangeInventoryMat="@ChangeInventoryMat"
                                       AddMaterialToGoal="@OnAddMaterial"
-                                      SaveData="@SaveGameData"
-                                      />
+                                      SaveData="@SaveGameData" />
                 </div>
             }
         }
     </div>
     <div class="row">
-         <div class="col-sm-12 col-md-8">
-             <input @bind="@newServantName" class="form-control" />
-         </div>
+        <div class="col-sm-12 col-md-8">
+            <input @bind="@newServantName" class="form-control" />
+        </div>
         <div class="col-sm-12 col-md-4">
             <button type="button" class="btn btn-secondary" disabled="@CannotAddNewServant" @onclick="@AddServant">New Servant</button>
         </div>
@@ -44,9 +50,11 @@
 
     private bool CannotAddNewServant => string.IsNullOrWhiteSpace(newServantName) || GameData.Servants.Any(s => s.Name == newServantName);
 
+    private ServantClass? FilterClass;
+
     protected override async Task OnInitializedAsync()
     {
-        GameData = await GameDataService.RetrieveData();
+        await GetGameData();
     }
 
     protected void RemoveServant(int index)
@@ -120,5 +128,32 @@
     protected void SaveGameData()
     {
         GameDataService.SaveData(GameData);
+    }
+
+    protected async Task ClearFilter()
+    {
+        FilterClass = null;
+
+        await GetGameData();
+    }
+
+    protected void SetFilter(ServantClass servantClass)
+    {
+
+        FilterClass = servantClass;
+
+        GetGameData();
+    }
+
+    protected async Task GetGameData()
+    {
+        GameData = await GameDataService.RetrieveData();
+
+        if (FilterClass != null)
+        {
+            GameData.Servants = GameData.Servants.Where(x => x.Class == FilterClass).ToList();
+        }
+
+        StateHasChanged();
     }
 }
