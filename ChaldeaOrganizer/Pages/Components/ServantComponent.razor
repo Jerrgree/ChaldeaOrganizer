@@ -24,7 +24,7 @@
                     <BSTabList>
                         @foreach((Goal goal, int i) in Servant.Goals.Select((goal, i) => ( goal, i )))
                         {
-                            <BSTab>
+                            <BSTab @key="@goal.Name">
                                 <BSTabLabel>@goal.Name</BSTabLabel>
                                 <BSTabContent>
                                     <GoalComponent Goal="@goal"
