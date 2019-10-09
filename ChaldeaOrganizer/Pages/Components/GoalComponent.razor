@@ -56,10 +56,10 @@
     public Goal Goal { get; set; }
 
     [Parameter]
-    public int Key { get; set; }
+    public string Key { get; set; }
 
     [Parameter]
-    public Action<int> CompleteGoal { get; set; }
+    public Action<string> CompleteGoal { get; set; }
 
     [Parameter]
     public Dictionary<string, int> Inventory { get; set; }
@@ -68,7 +68,7 @@
     public Action<string, int> ChangeInventoryMat { get; set; }
 
     [Parameter]
-    public Action<int, string, int> AddMaterialToGoal { get; set; }
+    public Action<string, string, int> AddMaterialToGoal { get; set; }
 
     #endregion
     private bool CanCompleteGoal => Goal.Materials.Aggregate(true, (acc, x) => acc && Inventory[x.Key] >= x.Value);

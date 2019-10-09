@@ -28,7 +28,7 @@
                                 <BSTabLabel>@goal.Name</BSTabLabel>
                                 <BSTabContent>
                                     <GoalComponent Goal="@goal"
-                                                   Key="@i"
+                                                   Key="@goal.Name"
                                                    CompleteGoal="@OnCompleteGoal"
                                                    Inventory="@Inventory"
                                                    ChangeInventoryMat="@ChangeInventoryMat"
@@ -72,13 +72,13 @@
     public Dictionary<string, int> Inventory { get; set; }
 
     [Parameter]
-    public Action<int, int> CompleteGoal { get; set; }
+    public Action<int, string> CompleteGoal { get; set; }
 
     [Parameter]
     public Action<string, int> ChangeInventoryMat { get; set; }
 
     [Parameter]
-    public Action<int, int, string, int> AddMaterialToGoal { get; set; }
+    public Action<int, string, string, int> AddMaterialToGoal { get; set; }
 
     [Parameter]
     public Action SaveData { get; set; }
@@ -107,16 +107,16 @@
         }
     }
 
-    void OnCompleteGoal(int index)
+    void OnCompleteGoal(string goalName)
     {
-        CompleteGoal?.Invoke(Key, index);
+        CompleteGoal?.Invoke(Key, goalName);
 
         StateHasChanged();
     }
 
-    void OnAddMaterialToGoal(int goalIndex, string material, int quantity)
+    void OnAddMaterialToGoal(string goalName, string material, int quantity)
     {
-        AddMaterialToGoal?.Invoke(Key, goalIndex, material, quantity);
+        AddMaterialToGoal?.Invoke(Key, goalName, material, quantity);
     }
 
     void ChangeClass(ServantClass newClass)
