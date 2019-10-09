@@ -19,7 +19,7 @@ namespace JsonDataServices
         /// <param name="fileLocation">The path to the file</param>
         /// <exception cref="FileNotFoundException" />
         /// <exception cref="ArgumentException" />
-        protected BaseJsonDataService(string fileLocation)
+        internal BaseJsonDataService(string fileLocation)
         {
             if (string.IsNullOrWhiteSpace(fileLocation))
             {
