@@ -69,16 +69,17 @@
         }
     }
 
-    protected void RemoveGoal(int servantIndex, int goalIndex)
+    protected void RemoveGoal(int servantIndex, string goalName)
     {
         if (GameData.Servants.ElementAt(servantIndex) != null
-            && GameData.Servants[servantIndex].Goals.ElementAtOrDefault(goalIndex) != null)
+            && GameData.Servants[servantIndex].Goals.Any(x => x.Name == goalName))
         {
-            foreach (var mat in GameData.Servants[servantIndex].Goals[goalIndex].Materials)
+            var goal = GameData.Servants[servantIndex].Goals.First(x => x.Name == goalName);
+            foreach (var mat in goal.Materials)
             {
                 GameData.Inventory[mat.Key] -= mat.Value;
             }
-            GameData.Servants[servantIndex].Goals.RemoveAt(goalIndex);
+            GameData.Servants[servantIndex].Goals.Remove(goal);
 
             GameDataService.SaveData(GameData);
         }
@@ -115,12 +116,12 @@
         }
     }
 
-    protected void OnAddMaterial(int servantIndex, int goalIndex, string material, int quantity)
+    protected void OnAddMaterial(int servantIndex, string goalName, string material, int quantity)
     {
         if (GameData.Servants.ElementAtOrDefault(servantIndex) != null
-            && GameData.Servants[servantIndex].Goals.ElementAtOrDefault(goalIndex) != null)
+            && GameData.Servants[servantIndex].Goals.Any(x => x.Name == goalName))
         {
-            GameData.Servants[servantIndex].Goals[goalIndex].Materials[material] = quantity;
+            GameData.Servants[servantIndex].Goals.First(x => x.Name == goalName).Materials[material] = quantity;
             GameDataService.SaveData(GameData);
         }
     }
