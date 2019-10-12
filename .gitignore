@@ -339,3 +339,4 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 /ChaldeaOrganizer/Data/data.json
+/ChaldeaOrganizer/Data/event.json

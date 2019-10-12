@@ -1,0 +1,20 @@
+﻿@page "/event"
+
+@using ChaldeaCommon.Models
+@using ChaldeaOrganizer.Pages.Components
+@using ChaldeaCommon.Interfaces
+
+@inject IDataService<EventData> EventDataService
+
+
+<h3>Events</h3>
+
+@code {
+
+    protected EventData EventData { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        EventData = await EventDataService.RetrieveData();
+    }
+}
