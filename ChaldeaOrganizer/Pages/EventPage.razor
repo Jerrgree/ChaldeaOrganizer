@@ -3,18 +3,40 @@
 @using ChaldeaCommon.Models
 @using ChaldeaOrganizer.Pages.Components
 @using ChaldeaCommon.Interfaces
+@using System.Linq
 
 @inject IDataService<EventData> EventDataService
 
 
 <h3>Events</h3>
 
+<div class="row">
+    <div class="col col-sm-12 col-md-4">
+        <input type="text" class="form-control" @bind="@newCurrencyName" />
+    </div>
+    <div class="col col-sm-12 col-md-4">
+        <input type="color" class="form-control" @bind="@newCurrencyColor" />
+    </div>
+    <div class="col col-sm-12 col-md-4">
+        <button type="button" class="btn btn-primary" @onclick="AddNewEvent">Add</button>
+    </div>
+</div>
+
 @code {
 
     protected EventData EventData { get; set; }
 
+    protected string newCurrencyColor { get; set; }
+
+    protected string newCurrencyName { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         EventData = await EventDataService.RetrieveData();
+    }
+
+    protected void AddNewEvent()
+    {
+        EventData.Currencies.Append(new EventCurrency(newCurrencyName, newCurrencyColor));
     }
 }
