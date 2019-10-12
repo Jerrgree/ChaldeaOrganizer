@@ -6,7 +6,7 @@ namespace ChaldeaCommon.Models
 {
     public class EventData
     {
-        public IEnumerable<EventCurrency> Currencies { get; set; }
+        public List<EventCurrency> Currencies { get; set; }
 
         public EventData()
         {

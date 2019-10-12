@@ -18,7 +18,7 @@
         <input type="color" class="form-control" @bind="@newCurrencyColor" />
     </div>
     <div class="col col-sm-12 col-md-4">
-        <button type="button" class="btn btn-primary" @onclick="AddNewEvent">Add</button>
+        <button type="button" class="btn btn-primary" @onclick="AddNewEvent" disabled="@CannotAddNewCurrency">Add</button>
     </div>
 </div>
 
@@ -30,6 +30,10 @@
 
     protected string newCurrencyName { get; set; }
 
+    bool CannotAddNewCurrency => string.IsNullOrWhiteSpace(newCurrencyColor)
+        || string.IsNullOrWhiteSpace(newCurrencyName)
+        || EventData.Currencies.Any(x => x.Name == newCurrencyName || x.Color == newCurrencyColor);
+
     protected override async Task OnInitializedAsync()
     {
         EventData = await EventDataService.RetrieveData();
@@ -37,6 +41,16 @@
 
     protected void AddNewEvent()
     {
-        EventData.Currencies.Append(new EventCurrency(newCurrencyName, newCurrencyColor));
+        if(!CannotAddNewCurrency)
+        {
+            EventData.Currencies.Add(new EventCurrency(newCurrencyName, newCurrencyColor));
+
+            EventDataService.SaveData(EventData);
+
+            newCurrencyColor = "";
+            newCurrencyName = "";
+
+            StateHasChanged();
+        }
     }
 }
