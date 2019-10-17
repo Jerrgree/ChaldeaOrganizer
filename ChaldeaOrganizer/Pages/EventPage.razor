@@ -9,7 +9,30 @@
 
 
 <h3>Events</h3>
+<div class="row">
+    <div class="col-sm-12 col-md-8">
+        <div id="currencyShop">
+            @foreach(var currency in EventData.Currencies)
+            {
+                <div class="card">
+                    <div class="card-header">
+                        <a class="card-link" data-toggle="collapse" href="@currency.Name">
+                            @currency.Name
+                        </a>
+                    </div>
+                    <div id="@currency.Name" class="collapse" data-parent="#currencyShop">
+                        <div class="card-body">
+                            @currency.Name Shop
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="col-sm-12 col-md-4">
 
+    </div>
+</div>
 <div class="row">
     <div class="col col-sm-12 col-md-4">
         <input type="text" class="form-control" @bind="@newCurrencyName" />
