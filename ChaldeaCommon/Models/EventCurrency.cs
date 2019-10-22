@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace ChaldeaCommon.Models
 {
@@ -18,5 +19,7 @@ namespace ChaldeaCommon.Models
             Name = name;
             Color = color;
         }
+
+        public int Amount => (Shop == null || Shop.Count == 0) ? 0 : Shop.Sum(x => x.Quantity * x.Cost);
     }
 }
