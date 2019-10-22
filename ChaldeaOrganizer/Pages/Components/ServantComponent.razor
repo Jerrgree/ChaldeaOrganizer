@@ -22,7 +22,7 @@
             {
                 <BSTabGroup>
                     <BSTabList>
-                        @foreach((Goal goal, int i) in Servant.Goals.Select((goal, i) => ( goal, i )))
+                        @foreach ((Goal goal, int i) in Servant.Goals.Select((goal, i) => (goal, i)))
                         {
                             <BSTab @key="@string.Format("{0}_{1}", Servant.Name, goal.Name)">
                                 <BSTabLabel>@goal.Name</BSTabLabel>
@@ -32,8 +32,7 @@
                                                    CompleteGoal="@OnCompleteGoal"
                                                    Inventory="@Inventory"
                                                    ChangeInventoryMat="@ChangeInventoryMat"
-                                                   AddMaterialToGoal="@OnAddMaterialToGoal"
-                                                   />
+                                                   AddMaterialToGoal="@OnAddMaterialToGoal" />
                                 </BSTabContent>
                             </BSTab>
                         }

@@ -11,9 +11,8 @@
 
 <div style="padding:15px">
     <div class="row">
-        <ServantClassDropdown
-                              ChangeData="@SetFilter"
-                              CurrentClass="@FilterClass"/>
+        <ServantClassDropdown ChangeData="@SetFilter"
+                              CurrentClass="@FilterClass" />
         <button class="btn btn-secondary" @onclick="@ClearFilter">Clear</button>
     </div>
     <div class="row">

@@ -1,16 +1,16 @@
 ﻿@using ChaldeaCommon.Enums
 
-    <select value="@CurrentClass" class="form-control" @onchange="@OnChange">
-        <option disabled value="">Please Select</option>
-        <option value="@ServantClass.Saber">Saber</option>
-        <option value="@ServantClass.Archer">Archer</option>
-        <option value="@ServantClass.Lancer">Lancer</option>
-        <option value="@ServantClass.Rider">Rider</option>
-        <option value="@ServantClass.Caster">Caster</option>
-        <option value="@ServantClass.Assassin">Assassin</option>
-        <option value="@ServantClass.Berserker">Berserker</option>
-        <option value="@ServantClass.Extra">Extra</option>
-    </select>
+<select value="@CurrentClass" class="form-control" @onchange="@OnChange">
+    <option disabled value="">Please Select</option>
+    <option value="@ServantClass.Saber">Saber</option>
+    <option value="@ServantClass.Archer">Archer</option>
+    <option value="@ServantClass.Lancer">Lancer</option>
+    <option value="@ServantClass.Rider">Rider</option>
+    <option value="@ServantClass.Caster">Caster</option>
+    <option value="@ServantClass.Assassin">Assassin</option>
+    <option value="@ServantClass.Berserker">Berserker</option>
+    <option value="@ServantClass.Extra">Extra</option>
+</select>
 
 @code {
     [Parameter]

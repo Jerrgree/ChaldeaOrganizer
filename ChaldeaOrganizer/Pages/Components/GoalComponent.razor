@@ -14,7 +14,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach(var material in Goal.Materials)
+                @foreach (var material in Goal.Materials)
                 {
                     <tr>
                         <td><img src="/Assets/@(material.Key).png" /></td>
@@ -41,14 +41,11 @@
                 </div>
             </div>
         </div>
-        <AddMaterialModal
-                          IsOpen="@ShowModal"
+        <AddMaterialModal IsOpen="@ShowModal"
                           AddMaterialToGoal="@OnAddMaterialToGoal"
-                          CloseModal="@CloseModal"
-                          />
+                          CloseModal="@CloseModal" />
     </div>
 }
-
 
 @code {
     #region Parameters

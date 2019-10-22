@@ -7,12 +7,11 @@
 
 @inject IDataService<EventData> EventDataService
 
-
 <h3>Events</h3>
 <div class="row">
     <div class="col-sm-12 col-md-8">
         <div id="currencyShop">
-            @foreach(var currency in EventData.Currencies)
+            @foreach (var currency in EventData.Currencies)
             {
                 <div class="card">
                     <div class="card-header">
@@ -30,17 +29,16 @@
         </div>
     </div>
     <div class="col-sm-12 col-md-4">
-
     </div>
 </div>
 <div class="row">
     <div class="col col-sm-12 col-md-4">
         <input type="text" class="form-control" @bind="@newCurrencyName" />
     </div>
-    <div class="col col-sm-12 col-md-4">
+    <div class="col col-sm-12 col-md-2">
         <input type="color" class="form-control" @bind="@newCurrencyColor" />
     </div>
-    <div class="col col-sm-12 col-md-4">
+    <div class="col col-sm-12 col-md-2">
         <button type="button" class="btn btn-primary" @onclick="AddNewEvent" disabled="@CannotAddNewCurrency">Add</button>
     </div>
 </div>
@@ -64,7 +62,7 @@
 
     protected void AddNewEvent()
     {
-        if(!CannotAddNewCurrency)
+        if (!CannotAddNewCurrency)
         {
             EventData.Currencies.Add(new EventCurrency(newCurrencyName, newCurrencyColor));
 
