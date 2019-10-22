@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ChaldeaCommon.Models
+﻿namespace ChaldeaCommon.Models
 {
     public class EventCurrencyShop
     {
