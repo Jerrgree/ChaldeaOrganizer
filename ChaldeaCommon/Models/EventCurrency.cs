@@ -8,21 +8,21 @@ namespace ChaldeaCommon.Models
     {
         public string Name { get; }
         public string Color { get; }
-        public bool IsLotteryCurrency { get; set; }
-        public bool IsShopCurrency { get; set; }
+        public bool HasShop { get; }
 
         public List<EventCurrencyShop> Shop { get; set; }
 
         public List<int> CurrencyDropInstance { get; set; }
 
-        public EventCurrency(string name, string color)
+        public EventCurrency(string name, string color, bool hasShop)
         {
             Name = name;
             Color = color;
+            HasShop = hasShop;
         }
 
-        public int Amount => (Shop?.Count == 0) ? 0 : Shop.Sum(x => x.Quantity * x.Cost);
+        public int Amount => (Shop == null || Shop.Count == 0) ? 0 : Shop.Sum(x => x.Quantity * x.Cost);
 
-        public int DropAverage => (CurrencyDropInstance?.Count == 0) ? 0 : (int)Math.Floor(CurrencyDropInstance.Average());
+        public int DropAverage => (CurrencyDropInstance == null || CurrencyDropInstance.Count == 0) ? 0 : (int)Math.Floor(CurrencyDropInstance.Average());
     }
 }

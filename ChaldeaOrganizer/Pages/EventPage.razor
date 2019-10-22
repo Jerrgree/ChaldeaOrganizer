@@ -39,6 +39,12 @@
         <input type="color" class="form-control" @bind="@newCurrencyColor" />
     </div>
     <div class="col col-sm-12 col-md-2">
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="newCurrencyHasShopCheck" @bind="@newCurrencyHasShop" />
+            <label class="custom-control-label" for="newCurrencyHasShopCheck">Shop</label>
+        </div>
+    </div>
+    <div class="col col-sm-12 col-md-2">
         <button type="button" class="btn btn-primary" @onclick="AddNewEvent" disabled="@CannotAddNewCurrency">Add</button>
     </div>
 </div>
@@ -50,6 +56,8 @@
     protected string newCurrencyColor { get; set; }
 
     protected string newCurrencyName { get; set; }
+
+    protected bool newCurrencyHasShop { get; set; } = true;
 
     bool CannotAddNewCurrency => string.IsNullOrWhiteSpace(newCurrencyColor)
         || string.IsNullOrWhiteSpace(newCurrencyName)
@@ -64,12 +72,13 @@
     {
         if (!CannotAddNewCurrency)
         {
-            EventData.Currencies.Add(new EventCurrency(newCurrencyName, newCurrencyColor));
+            EventData.Currencies.Add(new EventCurrency(newCurrencyName, newCurrencyColor, newCurrencyHasShop));
 
             EventDataService.SaveData(EventData);
 
             newCurrencyColor = "";
             newCurrencyName = "";
+            newCurrencyHasShop = true;
 
             StateHasChanged();
         }
