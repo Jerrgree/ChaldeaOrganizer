@@ -1,8 +1,8 @@
 ﻿namespace ChaldeaCommon.Models
 {
-    public class EventCurrencyShop
+    public class EventCurrencyShopItem
     {
-        public int Item { get; set; }
+        public string Item { get; set; }
         public int Quantity { get; set; }
         public int Cost { get; set; }
     }

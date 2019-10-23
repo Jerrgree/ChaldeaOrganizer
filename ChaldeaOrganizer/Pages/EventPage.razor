@@ -4,6 +4,8 @@
 @using ChaldeaOrganizer.Pages.Components
 @using ChaldeaCommon.Interfaces
 @using System.Linq
+@using BlazorStrap
+@using ChaldeaOrganizer.Pages.Components
 
 @inject IDataService<EventData> EventDataService
 
@@ -11,24 +13,29 @@
 <div class="row">
     <div class="col-sm-12 col-md-6">
         <div id="currencyShop">
-            @foreach (var currency in EventData.Currencies)
-            {
-                <div class="card">
-                    <div class="card-header">
-                        <a class="card-link" data-toggle="collapse" href="@currency.Name">
-                            @currency.Name
-                        </a>
-                    </div>
-                    <div id="@currency.Name" class="collapse" data-parent="#currencyShop">
-                        <div class="card-body">
-                            @currency.Name Shop
-                        </div>
-                    </div>
-                </div>
-            }
+            <BSTabGroup>
+                <BSTabList>
+                    @foreach (var currency in EventData.Currencies.Where(x => x.HasShop))
+                    {
+                        <BSTab @key="@currency.Name" style=@string.Format("color{0}", currency.Color)>
+                            <BSTabLabel>@currency.Name</BSTabLabel>
+                            <BSTabContent>
+                                <EventShopCompnent Shop="@currency.Shop" />
+                            </BSTabContent>
+                        </BSTab>
+
+                    }
+                </BSTabList>
+            </BSTabGroup>
         </div>
     </div>
     <div class="col-sm-12 col-md-6">
+        <div class="row">
+            <!--Estimates-->
+        </div>
+        <div class="row">
+            <!--Drop Instance Input-->
+        </div>
     </div>
 </div>
 <div class="row">

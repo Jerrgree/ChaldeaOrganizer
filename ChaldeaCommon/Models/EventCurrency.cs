@@ -10,7 +10,7 @@ namespace ChaldeaCommon.Models
         public string Color { get; }
         public bool HasShop { get; }
 
-        public List<EventCurrencyShop> Shop { get; set; }
+        public List<EventCurrencyShopItem> Shop { get; set; }
 
         public List<int> CurrencyDropInstance { get; set; }
 
