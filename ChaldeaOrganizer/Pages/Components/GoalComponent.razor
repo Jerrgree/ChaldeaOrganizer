@@ -56,16 +56,16 @@
     public string Key { get; set; }
 
     [Parameter]
-    public Action<string> CompleteGoal { get; set; }
+    public EventCallback<string> CompleteGoal { get; set; }
 
     [Parameter]
     public Dictionary<string, int> Inventory { get; set; }
 
     [Parameter]
-    public Action<string, int> ChangeInventoryMat { get; set; }
+    public EventCallback<Tuple<string, int>> ChangeInventoryMat { get; set; }
 
     [Parameter]
-    public Action<string, string, int> AddMaterialToGoal { get; set; }
+    public EventCallback<Tuple<string, string, int>> AddMaterialToGoal { get; set; }
 
     #endregion
     private bool CanCompleteGoal => Goal.Materials.Aggregate(true, (acc, x) => acc && Inventory[x.Key] >= x.Value);
@@ -76,23 +76,23 @@
 
     private bool ShowModal = false;
 
-    void OnCompleteGoal()
+    async Task OnCompleteGoal()
     {
-        CompleteGoal?.Invoke(Key);
+        await CompleteGoal.InvokeAsync(Key);
     }
 
-    void OnInventoryChanged(string material, object value)
+    async Task OnInventoryChanged(string material, object value)
     {
 
         if (int.TryParse(value.ToString(), out int num))
         {
-            ChangeInventoryMat?.Invoke(material, num);
+            await ChangeInventoryMat.InvokeAsync(new Tuple<string, int>(material, num));
         }
     }
 
-    void OnAddMaterialToGoal(Tuple<string, int> material)
+    async Task OnAddMaterialToGoal(Tuple<string, int> material)
     {
-        AddMaterialToGoal?.Invoke(Key, material.Item1, material.Item2);
+        await AddMaterialToGoal.InvokeAsync(new Tuple<string, string, int>(Key, material.Item1, material.Item2));
         ShowModal = false;
         StateHasChanged();
     }

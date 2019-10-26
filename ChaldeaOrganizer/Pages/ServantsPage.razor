@@ -68,28 +68,28 @@
         }
     }
 
-    protected void RemoveGoal(int servantIndex, string goalName)
+    protected void RemoveGoal(Tuple<int, string> args)
     {
-        if (GameData.Servants.ElementAt(servantIndex) != null
-            && GameData.Servants[servantIndex].Goals.Any(x => x.Name == goalName))
+        if (GameData.Servants.ElementAt(args.Item1) != null
+            && GameData.Servants[args.Item1].Goals.Any(x => x.Name == args.Item2))
         {
-            var goal = GameData.Servants[servantIndex].Goals.First(x => x.Name == goalName);
+            var goal = GameData.Servants[args.Item1].Goals.First(x => x.Name == args.Item2);
             foreach (var mat in goal.Materials)
             {
                 GameData.Inventory[mat.Key] -= mat.Value;
             }
-            GameData.Servants[servantIndex].Goals.Remove(goal);
+            GameData.Servants[args.Item1].Goals.Remove(goal);
 
             GameDataService.SaveData(GameData);
         }
     }
 
-    protected void ChangeInventoryMat(string material, int value)
+    protected void ChangeInventoryMat(Tuple<string, int> args)
     {
         // Check that mat exists
-        if (value >= 0)
+        if (args.Item2 >= 0)
         {
-            GameData.Inventory[material] = value;
+            GameData.Inventory[args.Item1] = args.Item2;
             StateHasChanged();
             GameDataService.SaveData(GameData);
         }
@@ -115,12 +115,13 @@
         }
     }
 
-    protected void OnAddMaterial(int servantIndex, string goalName, string material, int quantity)
+    // int servantIndex, string goalName, string material, int quantity
+    protected void OnAddMaterial(Tuple<int, string, string, int> args)
     {
-        if (GameData.Servants.ElementAtOrDefault(servantIndex) != null
-            && GameData.Servants[servantIndex].Goals.Any(x => x.Name == goalName))
+        if (GameData.Servants.ElementAtOrDefault(args.Item1) != null
+            && GameData.Servants[args.Item1].Goals.Any(x => x.Name == args.Item2))
         {
-            GameData.Servants[servantIndex].Goals.First(x => x.Name == goalName).Materials[material] = quantity;
+            GameData.Servants[args.Item1].Goals.First(x => x.Name == args.Item2).Materials[args.Item3] = args.Item4;
             GameDataService.SaveData(GameData);
         }
     }
