@@ -79,7 +79,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Blazored.Typeahead" Version="3.1.8" />
+    <PackageReference Include="Blazored.Typeahead" Version="4.1.0" />
     <PackageReference Include="BlazorStrap" Version="1.0.104" />
   </ItemGroup>
 

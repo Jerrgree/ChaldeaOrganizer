@@ -137,12 +137,12 @@
         await GetGameData();
     }
 
-    protected void SetFilter(ServantClass servantClass)
+    protected async Task SetFilter(ServantClass servantClass)
     {
 
         FilterClass = servantClass;
 
-        GetGameData();
+        await GetGameData();
     }
 
     protected async Task GetGameData()

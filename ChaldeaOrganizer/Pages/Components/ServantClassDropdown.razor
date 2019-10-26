@@ -17,10 +17,10 @@
     public ServantClass? CurrentClass { get; set; }
 
     [Parameter]
-    public Action<ServantClass> ChangeData { get; set; }
+    public Func<ServantClass, Task> ChangeData { get; set; }
 
-    void OnChange(ChangeEventArgs eventArgs)
+    async Task OnChange(ChangeEventArgs eventArgs)
     {
-        ChangeData?.Invoke((ServantClass)Enum.Parse(typeof(ServantClass), eventArgs.Value.ToString()));
+        await ChangeData?.Invoke((ServantClass)Enum.Parse(typeof(ServantClass), eventArgs.Value.ToString()));
     }
 }
