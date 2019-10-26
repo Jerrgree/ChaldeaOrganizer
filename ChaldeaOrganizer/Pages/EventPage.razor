@@ -5,7 +5,6 @@
 @using ChaldeaCommon.Interfaces
 @using System.Linq
 @using BlazorStrap
-@using ChaldeaOrganizer.Pages.Components
 
 @inject IDataService<EventData> EventDataService
 
@@ -20,7 +19,7 @@
                         <BSTab @key="@currency.Name" style=@string.Format("color{0}", currency.Color)>
                             <BSTabLabel>@currency.Name</BSTabLabel>
                             <BSTabContent>
-                                <EventShopCompnent Shop="@currency.Shop" />
+                                @*<EventShopComponent Shop="@currency.Shop" />*@
                             </BSTabContent>
                         </BSTab>
 
