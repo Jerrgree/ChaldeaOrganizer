@@ -16,9 +16,9 @@
                 <BSTabList>
                     @foreach (var currency in EventData.Currencies.Where(x => x.HasShop))
                     {
-                        <BSTab @key="@currency.Name" style=@string.Format("color{0}", currency.Color)>
-                            <BSTabLabel>@currency.Name</BSTabLabel>
-                            <BSTabContent>
+                        <BSTab @key="@currency.Name">
+                            <BSTabLabel style=@string.Format("background-color{0}", currency.Color)>@currency.Name</BSTabLabel>
+                            <BSTabContent style=@string.Format("background-color{0}", currency.Color)>
                                 <EventShopComponent Shop="@currency.Shop"
                                                     Color="@currency.Color"
                                                     SaveData="@SaveData" />
