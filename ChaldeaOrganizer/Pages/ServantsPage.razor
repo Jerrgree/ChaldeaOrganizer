@@ -18,7 +18,7 @@
     <div class="row">
         @if (GameData.Servants != null)
         {
-            foreach ((Servant servant, int i) in GameData.Servants.Select((servant, i) => (servant, i)))
+            foreach ((Servant servant, int i) in GameData.Servants.Where(ServantMatchesFilter).Select((servant, i) => (servant, i)))
             {
                 <div class="col-sm-12 col-md-6" style="padding-top:10px; padding-bottom:10px">
                     <ServantComponent Servant="@servant"
@@ -149,11 +149,11 @@
     {
         GameData = await GameDataService.RetrieveData();
 
-        if (FilterClass != null)
-        {
-            GameData.Servants = GameData.Servants.Where(x => x.Class == FilterClass).ToList();
-        }
-
         StateHasChanged();
+    }
+
+    bool ServantMatchesFilter(Servant s)
+    {
+        return FilterClass == null ? true : s.Class == FilterClass;
     }
 }
