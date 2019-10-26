@@ -12,23 +12,23 @@ namespace ChaldeaOrganizer.Pages.Components
         public bool IsOpen { get; set; }
 
         [Parameter]
-        public Action CloseModal { get; set; }
+        public EventCallback CloseModal { get; set; }
 
         [Parameter]
-        public Action<T> AddItem { get; set; }
+        public EventCallback<T> AddItem { get; set; }
 
         protected string ModalClass => IsOpen ? "show" : "";
 
-        protected virtual void Cancel()
+        protected virtual async Task Cancel()
         {
             Reset();
 
-            CloseModal?.Invoke();
+            await CloseModal.InvokeAsync(null);
         }
 
         protected abstract bool CannotAddItem { get; }
 
-        protected abstract void OnAddItem();
+        protected abstract Task OnAddItem();
 
         protected abstract void Reset();
     }

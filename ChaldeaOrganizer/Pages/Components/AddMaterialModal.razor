@@ -51,9 +51,9 @@
             .Where(x => x.ToLower().Contains(query) || x.GetMaterialLabel().ToLower().Contains(query)));
     }
 
-    protected override void OnAddItem()
+    protected override async Task OnAddItem()
     {
-        AddItem?.Invoke(new Tuple<string, int>(material, quantity));
+        await AddItem.InvokeAsync(new Tuple<string, int>(material, quantity));
 
         Reset();
     }

@@ -1,7 +1,7 @@
 ﻿@page "/event"
 
 @using ChaldeaCommon.Models
-@using ChaldeaOrganizer.Pages.Components
+@using ChaldeaOrganizer.Pages.Components.Event
 @using ChaldeaCommon.Interfaces
 @using System.Linq
 @using BlazorStrap
@@ -19,12 +19,15 @@
                         <BSTab @key="@currency.Name" style=@string.Format("color{0}", currency.Color)>
                             <BSTabLabel>@currency.Name</BSTabLabel>
                             <BSTabContent>
-                                @*<EventShopComponent Shop="@currency.Shop" />*@
+                                <EventShopComponent Shop="@currency.Shop"
+                                                    Color="@currency.Color"
+                                                    SaveData="@SaveData" />
                             </BSTabContent>
                         </BSTab>
 
                     }
                 </BSTabList>
+                <BSTabSelectedContent />
             </BSTabGroup>
         </div>
     </div>
@@ -53,6 +56,9 @@
     <div class="col col-sm-12 col-md-2">
         <button type="button" class="btn btn-primary" @onclick="AddNewEvent" disabled="@CannotAddNewCurrency">Add</button>
     </div>
+    <div class="col col-sm-12 col-md-2">
+        <button type="button" class="btn btn-danger" @onclick="ClearEvent">Clear Event</button>
+    </div>
 </div>
 
 @code {
@@ -74,19 +80,32 @@
         EventData = await EventDataService.RetrieveData();
     }
 
-    protected void AddNewEvent()
+    protected async Task AddNewEvent()
     {
         if (!CannotAddNewCurrency)
         {
-            EventData.Currencies.Add(new EventCurrency(newCurrencyName, newCurrencyColor, newCurrencyHasShop));
+            EventData.Currencies.Add(new EventCurrency(newCurrencyName, newCurrencyColor, newCurrencyHasShop)
+            {
+                Shop = new List<EventCurrencyShopItem>(),
+                CurrencyDropInstance = new List<int>()
+            });
 
-            EventDataService.SaveData(EventData);
-
+            await SaveData();
             newCurrencyColor = "";
             newCurrencyName = "";
             newCurrencyHasShop = true;
 
             StateHasChanged();
         }
+    }
+
+    protected void ClearEvent()
+    {
+        EventData = new EventData();
+    }
+
+    protected async Task SaveData()
+    {
+        await EventDataService.SaveData(EventData);
     }
 }

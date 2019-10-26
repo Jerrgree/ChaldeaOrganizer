@@ -1,6 +1,9 @@
 ﻿using ChaldeaCommon.Models;
 using System;
 using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace JsonDataServices
 {
@@ -14,5 +17,22 @@ namespace JsonDataServices
         /// <exception cref="FileNotFoundException" />
         /// <exception cref="ArgumentException" />
         public EventDataService(string fileLocation) : base(fileLocation) { }
+
+        public override async Task<EventData> RetrieveData()
+        {
+            var data = await base.RetrieveData();
+
+            foreach (var currencyWithoutShop in data.Currencies.Where(x => x.Shop == null))
+            {
+                currencyWithoutShop.Shop = new List<EventCurrencyShopItem>();
+            }
+
+            foreach (var currencyWithoutDrops in data.Currencies.Where(x => x.CurrencyDropInstance == null))
+            {
+                currencyWithoutDrops.CurrencyDropInstance = new List<int>();
+            }
+
+            return data;
+        }
     }
 }
