@@ -2,7 +2,22 @@
 @using ChaldeaOrganizer.Pages.Components.Event
 
 <table class="table table-bordered table-hover" style="background-color:@Color">
-    <thead></thead>
+    <thead>
+        <tr>
+            <td>
+                Item
+            </td>
+            <td>
+                Quantity
+            </td>
+            <td>
+                Cost
+            </td>
+            <td>
+                Total
+            </td>
+        </tr>
+    </thead>
     <tbody>
         @if (Shop != null && Shop.Count > 0)
         {
@@ -11,6 +26,23 @@
             {
                 <tr>
                     <td>@item.Item</td>
+                    <td>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">#</span>
+                            </div>
+                            <input type="number" class="form-control" @bind="item.Quantity" />
+                        </div>
+                    </td>
+                    <td>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">$</span>
+                            </div>
+                            <input type="number" class="form-control" @bind="item.Cost" />
+                        </div>
+                    </td>
+                    <td>@item.Total</td>
                 </tr>
             }
 

@@ -21,7 +21,9 @@ namespace ChaldeaCommon.Models
             HasShop = hasShop;
         }
 
-        public int Amount => (Shop == null || Shop.Count == 0) ? 0 : Shop.Sum(x => x.Quantity * x.Cost);
+        public int AmountNeeded => (Shop == null || Shop.Count == 0) ? 0 : Shop.Sum(x => x.Total);
+
+        public int AmountOwned { get; set; }
 
         public int DropAverage => (CurrencyDropInstance == null || CurrencyDropInstance.Count == 0) ? 0 : (int)Math.Floor(CurrencyDropInstance.Average());
     }
