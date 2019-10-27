@@ -1,0 +1,38 @@
+﻿@using ChaldeaCommon.Models
+@using ChaldeaOrganizer.Pages.Components.Event
+
+<div>
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th colspan="4">Drop Rates</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var currency in Currencies)
+            {
+                <DropRateComponent SaveData="@SaveData"
+                                   Currency="@currency" />
+            }
+        </tbody>
+    </table>
+</div>
+
+@code {
+    [Parameter]
+    public List<EventCurrency>
+    Currencies
+    { get; set; }
+
+    [Parameter]
+    public EventCallback SaveData { get; set; }
+
+    async Task ClearCurrencyRates(EventCurrency currency)
+    {
+        currency.CurrencyDropInstance.Clear();
+
+        await SaveData.InvokeAsync(null);
+
+        StateHasChanged();
+    }
+}

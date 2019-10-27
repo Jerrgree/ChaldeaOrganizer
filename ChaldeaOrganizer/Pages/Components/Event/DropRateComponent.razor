@@ -1,0 +1,50 @@
+﻿@using ChaldeaCommon.Models
+@using ChaldeaOrganizer.Pages.Components.Event
+
+<tr style="background-color: @Currency.Color">
+    <td>@Currency.Name</td>
+    <td>@Currency.DropAverage</td>
+    <td>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <button class="btn btn-success" type="button" @onclick="@AddNewDrop">Add</button>
+            </div>
+            <input type="number" class="form-control" @bind="@newDrop" />
+        </div>
+    </td>
+    <td>
+        <button class="btn btn-danger" @onclick=@ClearCurrencyRates>
+            <span class="oi oi-trash" />
+        </button>
+    </td>
+</tr>
+
+@code {
+    [Parameter]
+    public EventCurrency Currency { get; set; }
+
+    [Parameter]
+    public EventCallback SaveData { get; set; }
+
+    private int newDrop;
+
+    async Task ClearCurrencyRates()
+    {
+        Currency.CurrencyDropInstance.Clear();
+
+        await SaveData.InvokeAsync(null);
+
+        StateHasChanged();
+    }
+
+    async Task AddNewDrop()
+    {
+        Currency.CurrencyDropInstance.Add(newDrop);
+
+        newDrop = 0;
+
+        await SaveData.InvokeAsync(null);
+
+        StateHasChanged();
+    }
+}
