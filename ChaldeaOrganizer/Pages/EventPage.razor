@@ -33,7 +33,8 @@
     </div>
     <div class="col-sm-12 col-md-6">
         <div class="row">
-            <!--Estimates-->
+            <CurrencySummaryComponent SaveData="@SaveData"
+                                      Currencies="@EventData.Currencies" />
         </div>
         <div class="row">
             <DropRateContainer SaveData="@SaveData"
