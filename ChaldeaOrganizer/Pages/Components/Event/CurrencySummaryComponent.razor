@@ -1,0 +1,46 @@
+﻿@using ChaldeaCommon.Models
+
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Have</th>
+            <th>Need</th>
+            <th>Remaining</th>
+            <th>Runs</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var currency in Currencies)
+        {
+            <tr style="background-color: @currency.Color">
+                <td>
+                    <input type="number" class="form-control" @bind="@currency.AmountOwned" @onblur="@OnCurrencyAmountChanged" />
+                </td>
+                <td>
+                    @currency.AmountNeeded
+                </td>
+                <td>
+                    @currency.AmountRemaining
+                </td>
+                <td>
+                    @currency.RunsNeeded
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    [Parameter]
+    public List<EventCurrency> Currencies { get; set; }
+
+    [Parameter]
+    public EventCallback SaveData { get; set; }
+
+    async Task OnCurrencyAmountChanged()
+    {
+        await SaveData.InvokeAsync(null);
+
+        StateHasChanged();
+    }
+}

@@ -1,0 +1,52 @@
+﻿@using Blazored.Typeahead
+@using ChaldeaCommon.Extensions
+@using ChaldeaCommon.Models
+@using BlazorStrap
+
+@inherits NewItemModalBase<EventCurrencyShopItem>
+<BSModal IsOpen="@IsOpen" NoBackdrop="true" Class="@ModalClass">
+    <BSModalHeader OnClick="Cancel">
+        New Item
+    </BSModalHeader>
+    <BSModalBody>
+        <div class="col-sm-8 col-md-8">
+            <div class="form-group">
+                <label>Item</label>
+                <input class="form-control" @bind="@newShopItem.Item" />
+            </div>
+        </div>
+        <div class="col-sm-4 col-md-4">
+            <div class="form-group">
+                <label>Quantity</label>
+                <input class="form-control" @bind="@newShopItem.Quantity" />
+            </div>
+        </div>
+        <div class="col-sm-4 col-md-4">
+            <div class="form-group">
+                <label>Cost</label>
+                <input class="form-control" @bind="@newShopItem.Cost" />
+            </div>
+        </div>
+    </BSModalBody>
+    <BSModalFooter>
+        <button type="button" @onclick="@Cancel" class="btn btn-danger">Cancel</button>
+        <button type="button" @onclick="@OnAddItem" class="btn btn-success" disabled="@CannotAddItem">Save</button>
+    </BSModalFooter>
+</BSModal>
+@code {
+    private EventCurrencyShopItem newShopItem = new EventCurrencyShopItem();
+
+    protected override bool CannotAddItem => string.IsNullOrWhiteSpace(newShopItem.Item) || newShopItem.Quantity <= 0 || newShopItem.Cost <= 0;
+
+    protected override async Task OnAddItem()
+    {
+        await AddItem.InvokeAsync(newShopItem);
+
+        Reset();
+    }
+
+    protected override void Reset()
+    {
+        newShopItem = new EventCurrencyShopItem();
+    }
+}

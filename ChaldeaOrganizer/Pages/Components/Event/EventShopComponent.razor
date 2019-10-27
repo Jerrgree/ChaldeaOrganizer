@@ -1,0 +1,90 @@
+﻿@using ChaldeaCommon.Models
+@using ChaldeaOrganizer.Pages.Components.Event
+
+<table class="table table-bordered table-hover" style="background-color:@Color">
+    <thead>
+        <tr>
+            <td>
+                Item
+            </td>
+            <td>
+                Quantity
+            </td>
+            <td>
+                Cost
+            </td>
+            <td>
+                Total
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Shop != null && Shop.Count > 0)
+        {
+
+            @foreach (var item in Shop)
+            {
+                <tr>
+                    <td>@item.Item</td>
+                    <td>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">#</span>
+                            </div>
+                            <input type="number" class="form-control" @bind="item.Quantity" />
+                        </div>
+                    </td>
+                    <td>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">$</span>
+                            </div>
+                            <input type="number" class="form-control" @bind="item.Cost" />
+                        </div>
+                    </td>
+                    <td>@item.Total</td>
+                </tr>
+            }
+
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td>
+                <button type="button" class="btn btn-success" @onclick="() => { ShowModal = true; }">New Item</button>
+                <AddEventItemModal IsOpen="@ShowModal"
+                                   CloseModal="@CloseModal"
+                                   AddItem="@OnAddItem" />
+            </td>
+        </tr>
+    </tfoot>
+</table>
+
+@code {
+    [Parameter]
+    public List<EventCurrencyShopItem> Shop { get; set; }
+
+    [Parameter]
+    public string Color { get; set; }
+
+    [Parameter]
+    public EventCallback SaveData { get; set; }
+
+    private bool ShowModal = false;
+
+    async Task OnAddItem(EventCurrencyShopItem newItem)
+    {
+        Shop.Add(newItem);
+        ShowModal = false;
+
+        await SaveData.InvokeAsync(null);
+
+        StateHasChanged();
+    }
+
+    void CloseModal()
+    {
+        ShowModal = false;
+        StateHasChanged();
+    }
+}

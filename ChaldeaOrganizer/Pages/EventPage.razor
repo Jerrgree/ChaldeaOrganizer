@@ -1,0 +1,113 @@
+﻿@page "/event"
+
+@using ChaldeaCommon.Models
+@using ChaldeaOrganizer.Pages.Components.Event
+@using ChaldeaCommon.Interfaces
+@using System.Linq
+@using BlazorStrap
+
+@inject IDataService<EventData> EventDataService
+
+<h3>Events</h3>
+<div class="row">
+    <div class="col-sm-12 col-md-6">
+        <div id="currencyShop">
+            <BSTabGroup>
+                <BSTabList>
+                    @foreach (var currency in EventData.Currencies.Where(x => x.HasShop))
+                    {
+                        <BSTab @key="@currency.Name">
+                            <BSTabLabel style=@string.Format("background-color{0}", currency.Color)>@currency.Name</BSTabLabel>
+                            <BSTabContent style=@string.Format("background-color{0}", currency.Color)>
+                                <EventShopComponent Shop="@currency.Shop"
+                                                    Color="@currency.Color"
+                                                    SaveData="@SaveData" />
+                            </BSTabContent>
+                        </BSTab>
+
+                    }
+                </BSTabList>
+                <BSTabSelectedContent />
+            </BSTabGroup>
+        </div>
+    </div>
+    <div class="col-sm-12 col-md-6">
+        <div class="row">
+            <CurrencySummaryComponent SaveData="@SaveData"
+                                      Currencies="@EventData.Currencies" />
+        </div>
+        <div class="row">
+            <DropRateContainer SaveData="@SaveData"
+                               Currencies="@EventData.Currencies" />
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col col-sm-12 col-md-4">
+        <input type="text" class="form-control" @bind="@newCurrencyName" />
+    </div>
+    <div class="col col-sm-12 col-md-2">
+        <input type="color" class="form-control" @bind="@newCurrencyColor" />
+    </div>
+    <div class="col col-sm-12 col-md-2">
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="newCurrencyHasShopCheck" @bind="@newCurrencyHasShop" />
+            <label class="custom-control-label" for="newCurrencyHasShopCheck">Shop</label>
+        </div>
+    </div>
+    <div class="col col-sm-12 col-md-2">
+        <button type="button" class="btn btn-primary" @onclick="AddNewEvent" disabled="@CannotAddNewCurrency">Add</button>
+    </div>
+    <div class="col col-sm-12 col-md-2">
+        <button type="button" class="btn btn-danger" @onclick="ClearEvent">Clear Event</button>
+    </div>
+</div>
+
+@code {
+
+    protected EventData EventData { get; set; }
+
+    protected string newCurrencyColor { get; set; }
+
+    protected string newCurrencyName { get; set; }
+
+    protected bool newCurrencyHasShop { get; set; } = true;
+
+    bool CannotAddNewCurrency => string.IsNullOrWhiteSpace(newCurrencyColor)
+        || string.IsNullOrWhiteSpace(newCurrencyName)
+        || EventData.Currencies.Any(x => x.Name == newCurrencyName || x.Color == newCurrencyColor);
+
+    protected override async Task OnInitializedAsync()
+    {
+        EventData = await EventDataService.RetrieveData();
+    }
+
+    protected async Task AddNewEvent()
+    {
+        if (!CannotAddNewCurrency)
+        {
+            EventData.Currencies.Add(new EventCurrency(newCurrencyName, newCurrencyColor, newCurrencyHasShop)
+            {
+                Shop = new List<EventCurrencyShopItem>(),
+                CurrencyDropInstance = new List<int>()
+            });
+
+            await SaveData();
+            newCurrencyColor = "";
+            newCurrencyName = "";
+            newCurrencyHasShop = true;
+
+            StateHasChanged();
+        }
+    }
+
+    protected void ClearEvent()
+    {
+        EventData = new EventData();
+    }
+
+    protected async Task SaveData()
+    {
+        await EventDataService.SaveData(EventData);
+    }
+}

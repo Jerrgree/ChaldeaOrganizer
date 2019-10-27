@@ -1,16 +1,11 @@
-﻿using System;
+﻿using ChaldeaCommon.Models;
+using System;
 using System.IO;
-using System.Threading.Tasks;
-using ChaldeaCommon.Interfaces;
-using ChaldeaCommon.Models;
-using Newtonsoft.Json;
 
 namespace JsonDataServices
 {
-    public class GameDataService : IDataService<GameData>
+    public class GameDataService : BaseJsonDataService<GameData>
     {
-        protected string fileLocation;
-
         /// <summary>
         /// Initializes a new instace of the GameDataService
         /// That is bound to a specific file for I/O
@@ -18,44 +13,6 @@ namespace JsonDataServices
         /// <param name="fileLocation">The path to the file</param>
         /// <exception cref="FileNotFoundException" />
         /// <exception cref="ArgumentException" />
-        public GameDataService(string fileLocation)
-        {
-            if (string.IsNullOrWhiteSpace(fileLocation))
-            {
-                throw new ArgumentException("fileLocation must be provided");
-            }
-            if (File.Exists(fileLocation))
-            {
-                this.fileLocation = fileLocation;
-            }
-            else
-            {
-                throw new FileNotFoundException($"{fileLocation} could not be located");
-            }
-        }
-
-        public Task<GameData> RetrieveData()
-        {
-            using var file = File.OpenText(fileLocation);
-            using var reader = new JsonTextReader(file);
-
-            var serializer = new JsonSerializer();
-            var gameData = serializer.Deserialize<GameData>(reader);
-            // Initialize a new object if the file was empty
-            gameData ??= new GameData();
-            return Task.FromResult(gameData);
-        }
-
-        public Task<bool> SaveData(GameData data)
-        {
-            using var file = File.CreateText(fileLocation);
-
-            var serializer = new JsonSerializer()
-            {
-                Formatting = Formatting.Indented
-            };
-            serializer.Serialize(file, data);
-            return Task.FromResult(true);
-        }
+        public GameDataService(string fileLocation) : base(fileLocation) { }
     }
 }

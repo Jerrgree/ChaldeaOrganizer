@@ -1,17 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using ChaldeaCommon.Interfaces;
+using ChaldeaCommon.Models;
+using JsonDataServices;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using ChaldeaCommon.Interfaces;
-using JsonDataServices;
-using ChaldeaCommon.Models;
 
 namespace ChaldeaOrganizer
 {
@@ -33,6 +27,7 @@ namespace ChaldeaOrganizer
             // For Development
             //.AddCircuitOptions(options => { options.DetailedErrors = true; });
             services.AddSingleton<IDataService<GameData>>(s => new GameDataService("Data/data.json"));
+            services.AddSingleton<IDataService<EventData>>(s => new EventDataService("Data/event.json"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

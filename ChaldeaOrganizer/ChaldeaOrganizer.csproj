@@ -5,10 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Data\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="wwwroot\Assets\ArcherMonument.png" />
     <None Include="wwwroot\Assets\ArcherPiece.png" />
     <None Include="wwwroot\Assets\AssassinMonument.png" />
@@ -83,7 +79,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Blazored.Typeahead" Version="3.1.8" />
+    <PackageReference Include="Blazored.Typeahead" Version="4.1.0" />
     <PackageReference Include="BlazorStrap" Version="1.0.104" />
   </ItemGroup>
 

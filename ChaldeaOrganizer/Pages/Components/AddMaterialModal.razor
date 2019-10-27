@@ -3,6 +3,8 @@
 @using ChaldeaCommon.Data
 @using BlazorStrap
 
+@inherits NewItemModalBase<Tuple<string, int>>
+
 <BSModal IsOpen="@IsOpen" NoBackdrop="true" Class="@ModalClass">
     <BSModalHeader OnClick="Cancel">
         New Material
@@ -31,23 +33,12 @@
     </BSModalBody>
     <BSModalFooter>
         <button type="button" @onclick="@Cancel" class="btn btn-danger">Cancel</button>
-        <button type="button" @onclick="@OnAddMaterialToGoal" class="btn btn-success" disabled="@CannotAddMaterial">Save</button>
+        <button type="button" @onclick="@OnAddItem" class="btn btn-success" disabled="@CannotAddItem">Save</button>
     </BSModalFooter>
 </BSModal>
 
 @code {
-    [Parameter]
-    public bool IsOpen { get; set; }
-
-    [Parameter]
-    public Action<string, int> AddMaterialToGoal { get; set; }
-
-    [Parameter]
-    public Action CloseModal { get; set; }
-
-    private string ModalClass => IsOpen ? "show" : "";
-
-    private bool CannotAddMaterial => string.IsNullOrWhiteSpace(material) || quantity <= 0;
+    protected override bool CannotAddItem => string.IsNullOrWhiteSpace(material) || quantity <= 0;
 
     private string material;
 
@@ -60,20 +51,17 @@
             .Where(x => x.ToLower().Contains(query) || x.GetMaterialLabel().ToLower().Contains(query)));
     }
 
-    protected void OnAddMaterialToGoal()
+    protected override async Task OnAddItem()
     {
-        AddMaterialToGoal?.Invoke(material, quantity);
+        await AddItem.InvokeAsync(new Tuple<string, int>(material, quantity));
 
+        Reset();
+    }
+
+    protected override void Reset()
+    {
         material = "";
         quantity = 0;
         IsOpen = false;
-    }
-
-    protected void Cancel()
-    {
-        material = "";
-        quantity = 0;
-
-        CloseModal?.Invoke();
     }
 }

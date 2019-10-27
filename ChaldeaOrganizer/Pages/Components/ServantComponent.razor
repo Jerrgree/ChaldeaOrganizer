@@ -22,9 +22,9 @@
             {
                 <BSTabGroup>
                     <BSTabList>
-                        @foreach((Goal goal, int i) in Servant.Goals.Select((goal, i) => ( goal, i )))
+                        @foreach ((Goal goal, int i) in Servant.Goals.Select((goal, i) => (goal, i)))
                         {
-                            <BSTab @key="@goal.Name">
+                            <BSTab @key="@string.Format("{0}_{1}", Servant.Name, goal.Name)">
                                 <BSTabLabel>@goal.Name</BSTabLabel>
                                 <BSTabContent>
                                     <GoalComponent Goal="@goal"
@@ -32,8 +32,7 @@
                                                    CompleteGoal="@OnCompleteGoal"
                                                    Inventory="@Inventory"
                                                    ChangeInventoryMat="@ChangeInventoryMat"
-                                                   AddMaterialToGoal="@OnAddMaterialToGoal"
-                                                   />
+                                                   AddMaterialToGoal="@OnAddMaterialToGoal" />
                                 </BSTabContent>
                             </BSTab>
                         }
@@ -63,7 +62,7 @@
     public Servant Servant { get; set; }
 
     [Parameter]
-    public Action<int> DeleteServant { get; set; }
+    public EventCallback<int> DeleteServant { get; set; }
 
     [Parameter]
     public int Key { get; set; }
@@ -72,23 +71,23 @@
     public Dictionary<string, int> Inventory { get; set; }
 
     [Parameter]
-    public Action<int, string> CompleteGoal { get; set; }
+    public EventCallback<Tuple<int, string>> CompleteGoal { get; set; }
 
     [Parameter]
-    public Action<string, int> ChangeInventoryMat { get; set; }
+    public EventCallback<Tuple<string, int>> ChangeInventoryMat { get; set; }
 
     [Parameter]
-    public Action<int, string, string, int> AddMaterialToGoal { get; set; }
+    public EventCallback<Tuple<int, string, string, int>> AddMaterialToGoal { get; set; }
 
     [Parameter]
-    public Action SaveData { get; set; }
+    public EventCallback SaveData { get; set; }
     #endregion
 
     string newGoalName { get; set; } = "";
 
-    void OnDeleteServant()
+    async Task OnDeleteServant()
     {
-        DeleteServant?.Invoke(Key);
+        await DeleteServant.InvokeAsync(Key);
     }
 
     private bool CannotAddGoal => Servant.Goals.Any(x => x.Name == newGoalName);
@@ -107,22 +106,22 @@
         }
     }
 
-    void OnCompleteGoal(string goalName)
+    async Task OnCompleteGoal(string goalName)
     {
-        CompleteGoal?.Invoke(Key, goalName);
+        await CompleteGoal.InvokeAsync(new Tuple<int, string>(Key, goalName));
 
         StateHasChanged();
     }
 
-    void OnAddMaterialToGoal(string goalName, string material, int quantity)
+    async Task OnAddMaterialToGoal(Tuple<string, string, int> args)
     {
-        AddMaterialToGoal?.Invoke(Key, goalName, material, quantity);
+        await AddMaterialToGoal.InvokeAsync(new Tuple<int, string, string, int>(Key, args.Item1, args.Item2, args.Item3));
     }
 
-    void ChangeClass(ServantClass newClass)
+    async Task ChangeClass(ServantClass newClass)
     {
         Servant.Class = newClass;
 
-        SaveData?.Invoke();
+        await SaveData.InvokeAsync(null);
     }
 }

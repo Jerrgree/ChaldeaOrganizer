@@ -1,7 +1,5 @@
-﻿using System;
+﻿using ChaldeaCommon.Enums;
 using System.Collections.Generic;
-using System.Text;
-using ChaldeaCommon.Enums;
 
 namespace ChaldeaCommon.Models
 {

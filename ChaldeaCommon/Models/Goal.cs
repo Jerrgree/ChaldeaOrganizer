@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace ChaldeaCommon.Models
 {
@@ -10,6 +8,7 @@ namespace ChaldeaCommon.Models
         /// A list of items and their quantity
         /// </summary>
         public Dictionary<string, int> Materials { get; set; }
+
         /// <summary>
         /// A unique label for the goal
         /// </summary>

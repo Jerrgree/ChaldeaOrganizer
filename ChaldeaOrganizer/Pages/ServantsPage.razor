@@ -11,15 +11,14 @@
 
 <div style="padding:15px">
     <div class="row">
-        <ServantClassDropdown
-                              ChangeData="@SetFilter"
-                              CurrentClass="@FilterClass"/>
+        <ServantClassDropdown ChangeData="@SetFilter"
+                              CurrentClass="@FilterClass" />
         <button class="btn btn-secondary" @onclick="@ClearFilter">Clear</button>
     </div>
     <div class="row">
         @if (GameData.Servants != null)
         {
-            foreach ((Servant servant, int i) in GameData.Servants.Select((servant, i) => (servant, i)))
+            foreach ((Servant servant, int i) in GameData.Servants.Where(ServantMatchesFilter).Select((servant, i) => (servant, i)))
             {
                 <div class="col-sm-12 col-md-6" style="padding-top:10px; padding-bottom:10px">
                     <ServantComponent Servant="@servant"
@@ -69,28 +68,28 @@
         }
     }
 
-    protected void RemoveGoal(int servantIndex, string goalName)
+    protected void RemoveGoal(Tuple<int, string> args)
     {
-        if (GameData.Servants.ElementAt(servantIndex) != null
-            && GameData.Servants[servantIndex].Goals.Any(x => x.Name == goalName))
+        if (GameData.Servants.ElementAt(args.Item1) != null
+            && GameData.Servants[args.Item1].Goals.Any(x => x.Name == args.Item2))
         {
-            var goal = GameData.Servants[servantIndex].Goals.First(x => x.Name == goalName);
+            var goal = GameData.Servants[args.Item1].Goals.First(x => x.Name == args.Item2);
             foreach (var mat in goal.Materials)
             {
                 GameData.Inventory[mat.Key] -= mat.Value;
             }
-            GameData.Servants[servantIndex].Goals.Remove(goal);
+            GameData.Servants[args.Item1].Goals.Remove(goal);
 
             GameDataService.SaveData(GameData);
         }
     }
 
-    protected void ChangeInventoryMat(string material, int value)
+    protected void ChangeInventoryMat(Tuple<string, int> args)
     {
         // Check that mat exists
-        if (value >= 0)
+        if (args.Item2 >= 0)
         {
-            GameData.Inventory[material] = value;
+            GameData.Inventory[args.Item1] = args.Item2;
             StateHasChanged();
             GameDataService.SaveData(GameData);
         }
@@ -116,12 +115,13 @@
         }
     }
 
-    protected void OnAddMaterial(int servantIndex, string goalName, string material, int quantity)
+    // int servantIndex, string goalName, string material, int quantity
+    protected void OnAddMaterial(Tuple<int, string, string, int> args)
     {
-        if (GameData.Servants.ElementAtOrDefault(servantIndex) != null
-            && GameData.Servants[servantIndex].Goals.Any(x => x.Name == goalName))
+        if (GameData.Servants.ElementAtOrDefault(args.Item1) != null
+            && GameData.Servants[args.Item1].Goals.Any(x => x.Name == args.Item2))
         {
-            GameData.Servants[servantIndex].Goals.First(x => x.Name == goalName).Materials[material] = quantity;
+            GameData.Servants[args.Item1].Goals.First(x => x.Name == args.Item2).Materials[args.Item3] = args.Item4;
             GameDataService.SaveData(GameData);
         }
     }
@@ -138,23 +138,23 @@
         await GetGameData();
     }
 
-    protected void SetFilter(ServantClass servantClass)
+    protected async Task SetFilter(ServantClass servantClass)
     {
 
         FilterClass = servantClass;
 
-        GetGameData();
+        await GetGameData();
     }
 
     protected async Task GetGameData()
     {
         GameData = await GameDataService.RetrieveData();
 
-        if (FilterClass != null)
-        {
-            GameData.Servants = GameData.Servants.Where(x => x.Class == FilterClass).ToList();
-        }
-
         StateHasChanged();
+    }
+
+    bool ServantMatchesFilter(Servant s)
+    {
+        return FilterClass == null ? true : s.Class == FilterClass;
     }
 }
