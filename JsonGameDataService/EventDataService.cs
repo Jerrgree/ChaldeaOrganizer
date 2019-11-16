@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace JsonDataServices
 {
-    public class EventDataService : BaseJsonDataService<EventData>
+    public sealed class EventDataService : BaseJsonDataService<EventData>
     {
         /// <summary>
         /// Initializes a new instace of the GameDataService

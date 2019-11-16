@@ -9,45 +9,51 @@
 @inject IDataService<EventData> EventDataService
 
 <h3>Events</h3>
-<div class="row">
-    <div class="col-sm-12 col-md-6">
-        <div id="currencyShop">
-            <BSTabGroup>
-                <BSTabList>
-                    @foreach (var currency in EventData.Currencies.Where(x => x.HasShop))
-                    {
-                        <BSTab @key="@currency.Name">
-                            <BSTabLabel style=@string.Format("background-color{0}", currency.Color)>@currency.Name</BSTabLabel>
-                            <BSTabContent style=@string.Format("background-color{0}", currency.Color)>
-                                <EventShopComponent Shop="@currency.Shop"
-                                                    Color="@currency.Color"
-                                                    SaveData="@SaveData" />
-                            </BSTabContent>
-                        </BSTab>
+@if (EventData.Currencies?.Count > 0)
+{
+    <div class="row">
+        <div class="col-sm-12 col-md-6">
+            <div id="currencyShop">
+                <BSTabGroup>
+                    <BSTabList>
+                        @foreach (var currency in EventData.Currencies.Where(x => x.HasShop))
+                        {
+                            <BSTab @key="@currency.Name">
+                                <BSTabLabel style=@string.Format("background-color: {0}", currency.Color)>@currency.Name</BSTabLabel>
+                                <BSTabContent>
+                                    <EventShopComponent Shop="@currency.Shop"
+                                                        Color="@currency.Color"
+                                                        SaveData="@SaveData" />
+                                </BSTabContent>
+                            </BSTab>
 
-                    }
-                </BSTabList>
-                <BSTabSelectedContent />
-            </BSTabGroup>
+                        }
+                    </BSTabList>
+                    <BSTabSelectedContent />
+                </BSTabGroup>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-6">
+            <div class="row">
+                <CurrencySummaryComponent SaveData="@SaveData"
+                                          Currencies="@EventData.Currencies" />
+            </div>
+            <div class="row">
+                <DropRateContainer SaveData="@SaveData"
+                                   Currencies="@EventData.Currencies" />
+            </div>
         </div>
     </div>
-    <div class="col-sm-12 col-md-6">
-        <div class="row">
-            <CurrencySummaryComponent SaveData="@SaveData"
-                                      Currencies="@EventData.Currencies" />
-        </div>
-        <div class="row">
-            <DropRateContainer SaveData="@SaveData"
-                               Currencies="@EventData.Currencies" />
-        </div>
-    </div>
-</div>
+}
+
 <div class="row">
     <div class="col col-sm-12 col-md-4">
-        <input type="text" class="form-control" @bind="@newCurrencyName" />
-    </div>
-    <div class="col col-sm-12 col-md-2">
-        <input type="color" class="form-control" @bind="@newCurrencyColor" />
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <input type="color" class="form-control" @bind="@newCurrencyColor" style="background-color: @newCurrencyColor" />
+            </div>
+            <input type="text" class="form-control" @bind="@newCurrencyName" />
+        </div>
     </div>
     <div class="col col-sm-12 col-md-2">
         <div class="custom-control custom-checkbox">
@@ -67,7 +73,7 @@
 
     protected EventData EventData { get; set; }
 
-    protected string newCurrencyColor { get; set; }
+    protected string newCurrencyColor { get; set; } = "#000000";
 
     protected string newCurrencyName { get; set; }
 
@@ -93,7 +99,7 @@
             });
 
             await SaveData();
-            newCurrencyColor = "";
+            newCurrencyColor = "#000000";
             newCurrencyName = "";
             newCurrencyHasShop = true;
 
@@ -101,9 +107,10 @@
         }
     }
 
-    protected void ClearEvent()
+    protected async Task ClearEvent()
     {
         EventData = new EventData();
+        await EventDataService.SaveData(EventData);
     }
 
     protected async Task SaveData()

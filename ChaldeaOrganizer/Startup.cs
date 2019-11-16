@@ -26,8 +26,8 @@ namespace ChaldeaOrganizer
             services.AddServerSideBlazor();
             // For Development
             //.AddCircuitOptions(options => { options.DetailedErrors = true; });
-            services.AddSingleton<IDataService<GameData>>(s => new GameDataService("Data/data.json"));
-            services.AddSingleton<IDataService<EventData>>(s => new EventDataService("Data/event.json"));
+            services.AddTransient<IDataService<GameData>>(s => new GameDataService("Data/data.json"));
+            services.AddTransient<IDataService<EventData>>(s => new EventDataService("Data/event.json"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

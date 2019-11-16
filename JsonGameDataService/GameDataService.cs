@@ -4,7 +4,7 @@ using System.IO;
 
 namespace JsonDataServices
 {
-    public class GameDataService : BaseJsonDataService<GameData>
+    public sealed class GameDataService : BaseJsonDataService<GameData>
     {
         /// <summary>
         /// Initializes a new instace of the GameDataService

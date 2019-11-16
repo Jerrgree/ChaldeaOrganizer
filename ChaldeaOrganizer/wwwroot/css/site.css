@@ -107,6 +107,10 @@ app {
     color: red;
 }
 
+.inline {
+    display: inline;
+}
+
 @media (max-width: 767.98px) {
     .main .top-row {
         display: none;
