@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace JsonDataServices
 {
-    public class BaseJsonDataService<T> : IDataService<T> where T : new()
+    public abstract class BaseJsonDataService<T> : IDataService<T> where T : new()
     {
         protected string fileLocation;
 
