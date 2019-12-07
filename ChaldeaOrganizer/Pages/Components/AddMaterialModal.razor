@@ -39,7 +39,7 @@
 </BSModal>
 
 @code {
-    protected override bool CannotAddItem => materialInput != Material.Unkown || quantity <= 0;
+    protected override bool CannotAddItem => materialInput == Material.Unkown || quantity <= 0;
 
     private Material materialInput;
 
@@ -50,8 +50,7 @@
         query = query.ToLower();
         return Task.FromResult(Materials
             .GetMaterials()
-            .Where(x => (Enum.GetName(typeof(Material), x).ToLower().Contains(query))
-            || (x.GetMaterialLabel().ToLower().Contains(query))));
+            .Where(x => x.GetMaterialLabel().ToLower().Contains(query)));
     }
 
     protected override async Task OnAddItem()
