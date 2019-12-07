@@ -1,9 +1,10 @@
 ﻿@using Blazored.Typeahead
 @using ChaldeaCommon.Extensions
 @using ChaldeaCommon.Data
+@using ChaldeaCommon.Enums
 @using BlazorStrap
 
-@inherits NewItemModalBase<Tuple<string, int>>
+@inherits NewItemModalBase<Tuple<Material, int>>
 
 <BSModal IsOpen="@IsOpen" NoBackdrop="true" Class="@ModalClass">
     <BSModalHeader OnClick="Cancel">
@@ -14,7 +15,7 @@
             <div class="form-group">
                 <label>Item</label>
                 <BlazoredTypeahead SearchMethod="@SearchForMaterials"
-                                   @bind-Value="@material">
+                                   @bind-Value="@materialInput">
                     <SelectedTemplate>
                         @context.GetMaterialLabel()
                     </SelectedTemplate>
@@ -38,29 +39,31 @@
 </BSModal>
 
 @code {
-    protected override bool CannotAddItem => string.IsNullOrWhiteSpace(material) || quantity <= 0;
+    protected override bool CannotAddItem => materialInput != Material.Unkown || quantity <= 0;
 
-    private string material;
+    private Material materialInput;
 
     private int quantity = 0;
 
-    protected Task<IEnumerable<string>> SearchForMaterials(string query)
+    protected Task<IEnumerable<Material>> SearchForMaterials(string query)
     {
         query = query.ToLower();
-        return Task.FromResult(Materials.GetMaterials()
-            .Where(x => x.ToLower().Contains(query) || x.GetMaterialLabel().ToLower().Contains(query)));
+        return Task.FromResult(Materials
+            .GetMaterials()
+            .Where(x => (Enum.GetName(typeof(Material), x).ToLower().Contains(query))
+            || (x.GetMaterialLabel().ToLower().Contains(query))));
     }
 
     protected override async Task OnAddItem()
     {
-        await AddItem.InvokeAsync(new Tuple<string, int>(material, quantity));
+        await AddItem.InvokeAsync(new Tuple<Material, int>(materialInput, quantity));
 
         Reset();
     }
 
     protected override void Reset()
     {
-        material = "";
+        materialInput = Material.Unkown;
         quantity = 0;
         IsOpen = false;
     }

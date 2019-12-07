@@ -84,7 +84,7 @@
         }
     }
 
-    protected void ChangeInventoryMat(Tuple<string, int> args)
+    protected void ChangeInventoryMat(Tuple<Material, int> args)
     {
         // Check that mat exists
         if (args.Item2 >= 0)
@@ -104,7 +104,7 @@
                 Goals = Enumerable.Range(1, 4).Select(x => new Goal()
                 {
                     Name = $"Ascension {x}",
-                    Materials = new Dictionary<string, int>()
+                    Materials = new Dictionary<Material, int>()
                 }).ToList(),
                 Name = newServantName
             };
@@ -116,7 +116,7 @@
     }
 
     // int servantIndex, string goalName, string material, int quantity
-    protected void OnAddMaterial(Tuple<int, string, string, int> args)
+    protected void OnAddMaterial(Tuple<int, string, Material, int> args)
     {
         if (GameData.Servants.ElementAtOrDefault(args.Item1) != null
             && GameData.Servants[args.Item1].Goals.Any(x => x.Name == args.Item2))

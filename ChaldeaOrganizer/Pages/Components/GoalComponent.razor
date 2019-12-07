@@ -1,5 +1,6 @@
 ﻿@using ChaldeaCommon.Models
 @using ChaldeaCommon.Extensions
+@using ChaldeaCommon.Enums
 
 @if (Goal != null && Goal.Materials != null)
 {
@@ -59,13 +60,13 @@
     public EventCallback<string> CompleteGoal { get; set; }
 
     [Parameter]
-    public Dictionary<string, int> Inventory { get; set; }
+    public Dictionary<Material, int> Inventory { get; set; }
 
     [Parameter]
-    public EventCallback<Tuple<string, int>> ChangeInventoryMat { get; set; }
+    public EventCallback<Tuple<Material, int>> ChangeInventoryMat { get; set; }
 
     [Parameter]
-    public EventCallback<Tuple<string, string, int>> AddMaterialToGoal { get; set; }
+    public EventCallback<Tuple<string, Material, int>> AddMaterialToGoal { get; set; }
 
     #endregion
     private bool CanCompleteGoal => Goal.Materials.Aggregate(true, (acc, x) => acc && Inventory[x.Key] >= x.Value);
@@ -81,18 +82,18 @@
         await CompleteGoal.InvokeAsync(Key);
     }
 
-    async Task OnInventoryChanged(string material, object value)
+    async Task OnInventoryChanged(Material material, object value)
     {
 
         if (int.TryParse(value.ToString(), out int num))
         {
-            await ChangeInventoryMat.InvokeAsync(new Tuple<string, int>(material, num));
+            await ChangeInventoryMat.InvokeAsync(new Tuple<Material, int>(material, num));
         }
     }
 
-    async Task OnAddMaterialToGoal(Tuple<string, int> material)
+    async Task OnAddMaterialToGoal(Tuple<Material, int> material)
     {
-        await AddMaterialToGoal.InvokeAsync(new Tuple<string, string, int>(Key, material.Item1, material.Item2));
+        await AddMaterialToGoal.InvokeAsync(new Tuple<string, Material, int>(Key, material.Item1, material.Item2));
         ShowModal = false;
         StateHasChanged();
     }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using ChaldeaCommon.Enums;
+using System.Collections.Generic;
 
 namespace ChaldeaCommon.Models
 {
@@ -7,7 +8,7 @@ namespace ChaldeaCommon.Models
         /// <summary>
         /// A list of owned items and their quantity
         /// </summary>
-        public Dictionary<string, int> Inventory { get; set; }
+        public Dictionary<Material, int> Inventory { get; set; }
 
         /// <summary>
         /// A list of owned servants
@@ -16,7 +17,7 @@ namespace ChaldeaCommon.Models
 
         public GameData()
         {
-            Inventory = new Dictionary<string, int>();
+            Inventory = new Dictionary<Material, int>();
             Servants = new List<Servant>();
         }
     }

@@ -3,6 +3,7 @@
 @using ChaldeaCommon.Models
 @using ChaldeaCommon.Interfaces
 @using ChaldeaCommon.Data
+@using ChaldeaCommon.Enums
 @using ChaldeaOrganizer.Pages.Components
 
 @inject IDataService<GameData>  GameDataService
@@ -29,8 +30,8 @@
 @code {
     GameData GameData;
 
-    IEnumerable<KeyValuePair<string, int>> InventoryList1;
-    IEnumerable<KeyValuePair<string, int>> InventoryList2;
+    IEnumerable<KeyValuePair<Material, int>> InventoryList1;
+    IEnumerable<KeyValuePair<Material, int>> InventoryList2;
 
     protected override async Task OnInitializedAsync()
     {
@@ -56,7 +57,7 @@
         InventoryList2 = GameData.Inventory.Skip(splitPoint);
     }
 
-    protected void UpdateInventory(string material, int quantity)
+    protected void UpdateInventory(Material material, int quantity)
     {
         GameData.Inventory[material] = quantity;
 
