@@ -1,6 +1,7 @@
 ﻿using ChaldeaCommon.Enums;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ChaldeaCommon.Data
 {
@@ -8,7 +9,7 @@ namespace ChaldeaCommon.Data
     {
         public static IEnumerable<Material> GetMaterials()
         {
-            return (IEnumerable<Material>)Enum.GetValues(typeof(Material));
+            return ((IEnumerable<Material>)Enum.GetValues(typeof(Material))).Where(x => x != Material.Unkown);
         }
     }
 }
