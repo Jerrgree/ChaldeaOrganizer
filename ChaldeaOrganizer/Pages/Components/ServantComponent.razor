@@ -1,6 +1,7 @@
 ﻿@using ChaldeaCommon.Models
 @using BlazorStrap
 @using ChaldeaOrganizer.Pages.Components
+@using ChaldeaOrganizer.Models
 @using ChaldeaCommon.Enums
 
 @if (Servant != null)
@@ -68,16 +69,16 @@
     public int Key { get; set; }
 
     [Parameter]
-    public Dictionary<string, int> Inventory { get; set; }
+    public Dictionary<Material, int> Inventory { get; set; }
 
     [Parameter]
-    public EventCallback<Tuple<int, string>> CompleteGoal { get; set; }
+    public EventCallback<ServantGoalArgs> CompleteGoal { get; set; }
 
     [Parameter]
-    public EventCallback<Tuple<string, int>> ChangeInventoryMat { get; set; }
+    public EventCallback<MaterialQuantityChangedArgs> ChangeInventoryMat { get; set; }
 
     [Parameter]
-    public EventCallback<Tuple<int, string, string, int>> AddMaterialToGoal { get; set; }
+    public EventCallback<ServantGoalMaterialChangeArgs> AddMaterialToGoal { get; set; }
 
     [Parameter]
     public EventCallback SaveData { get; set; }
@@ -99,7 +100,7 @@
             Servant.Goals.Add(new Goal()
             {
                 Name = newGoalName,
-                Materials = new Dictionary<string, int>()
+                Materials = new Dictionary<Material, int>()
             });
 
             newGoalName = "";
@@ -108,14 +109,24 @@
 
     async Task OnCompleteGoal(string goalName)
     {
-        await CompleteGoal.InvokeAsync(new Tuple<int, string>(Key, goalName));
+        await CompleteGoal.InvokeAsync(new ServantGoalArgs()
+        {
+            ServantId = Key,
+            GoalName = goalName
+        });
 
         StateHasChanged();
     }
 
-    async Task OnAddMaterialToGoal(Tuple<string, string, int> args)
+    async Task OnAddMaterialToGoal(GoalMaterialChangedArgs args)
     {
-        await AddMaterialToGoal.InvokeAsync(new Tuple<int, string, string, int>(Key, args.Item1, args.Item2, args.Item3));
+        await AddMaterialToGoal.InvokeAsync(new ServantGoalMaterialChangeArgs()
+        {
+            ServantId = Key,
+            GoalName = args.GoalName,
+            Material = args.Material,
+            Quantity = args.Quantity
+        });
     }
 
     async Task ChangeClass(ServantClass newClass)

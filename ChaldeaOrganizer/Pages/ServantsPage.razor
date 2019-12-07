@@ -1,7 +1,8 @@
 ﻿@page "/servants"
 
-@using ChaldeaCommon.Models
 @using ChaldeaOrganizer.Pages.Components
+@using ChaldeaOrganizer.Models
+@using ChaldeaCommon.Models
 @using ChaldeaCommon.Interfaces
 @using ChaldeaCommon.Enums
 
@@ -68,28 +69,28 @@
         }
     }
 
-    protected void RemoveGoal(Tuple<int, string> args)
+    protected void RemoveGoal(ServantGoalArgs args)
     {
-        if (GameData.Servants.ElementAt(args.Item1) != null
-            && GameData.Servants[args.Item1].Goals.Any(x => x.Name == args.Item2))
+        if (GameData.Servants.ElementAt(args.ServantId) != null
+            && GameData.Servants[args.ServantId].Goals.Any(x => x.Name == args.GoalName))
         {
-            var goal = GameData.Servants[args.Item1].Goals.First(x => x.Name == args.Item2);
+            var goal = GameData.Servants[args.ServantId].Goals.First(x => x.Name == args.GoalName);
             foreach (var mat in goal.Materials)
             {
                 GameData.Inventory[mat.Key] -= mat.Value;
             }
-            GameData.Servants[args.Item1].Goals.Remove(goal);
+            GameData.Servants[args.ServantId].Goals.Remove(goal);
 
             GameDataService.SaveData(GameData);
         }
     }
 
-    protected void ChangeInventoryMat(Tuple<string, int> args)
+    protected void ChangeInventoryMat(MaterialQuantityChangedArgs args)
     {
         // Check that mat exists
-        if (args.Item2 >= 0)
+        if (args.Quantity >= 0)
         {
-            GameData.Inventory[args.Item1] = args.Item2;
+            GameData.Inventory[args.Material] = args.Quantity;
             StateHasChanged();
             GameDataService.SaveData(GameData);
         }
@@ -104,7 +105,7 @@
                 Goals = Enumerable.Range(1, 4).Select(x => new Goal()
                 {
                     Name = $"Ascension {x}",
-                    Materials = new Dictionary<string, int>()
+                    Materials = new Dictionary<Material, int>()
                 }).ToList(),
                 Name = newServantName
             };
@@ -115,13 +116,12 @@
         }
     }
 
-    // int servantIndex, string goalName, string material, int quantity
-    protected void OnAddMaterial(Tuple<int, string, string, int> args)
+    protected void OnAddMaterial(ServantGoalMaterialChangeArgs args)
     {
-        if (GameData.Servants.ElementAtOrDefault(args.Item1) != null
-            && GameData.Servants[args.Item1].Goals.Any(x => x.Name == args.Item2))
+        if (GameData.Servants.ElementAtOrDefault(args.ServantId) != null
+            && GameData.Servants[args.ServantId].Goals.Any(x => x.Name == args.GoalName))
         {
-            GameData.Servants[args.Item1].Goals.First(x => x.Name == args.Item2).Materials[args.Item3] = args.Item4;
+            GameData.Servants[args.ServantId].Goals.First(x => x.Name == args.GoalName).Materials[args.Material] = args.Quantity;
             GameDataService.SaveData(GameData);
         }
     }
