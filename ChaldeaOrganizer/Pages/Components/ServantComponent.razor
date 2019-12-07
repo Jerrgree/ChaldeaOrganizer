@@ -1,6 +1,7 @@
 ﻿@using ChaldeaCommon.Models
 @using BlazorStrap
 @using ChaldeaOrganizer.Pages.Components
+@using ChaldeaOrganizer.Models
 @using ChaldeaCommon.Enums
 
 @if (Servant != null)
@@ -71,13 +72,13 @@
     public Dictionary<Material, int> Inventory { get; set; }
 
     [Parameter]
-    public EventCallback<Tuple<int, string>> CompleteGoal { get; set; }
+    public EventCallback<ServantGoalArgs> CompleteGoal { get; set; }
 
     [Parameter]
-    public EventCallback<Tuple<Material, int>> ChangeInventoryMat { get; set; }
+    public EventCallback<MaterialQuantityChangedArgs> ChangeInventoryMat { get; set; }
 
     [Parameter]
-    public EventCallback<Tuple<int, string, Material, int>> AddMaterialToGoal { get; set; }
+    public EventCallback<ServantGoalMaterialChangeArgs> AddMaterialToGoal { get; set; }
 
     [Parameter]
     public EventCallback SaveData { get; set; }
@@ -108,14 +109,24 @@
 
     async Task OnCompleteGoal(string goalName)
     {
-        await CompleteGoal.InvokeAsync(new Tuple<int, string>(Key, goalName));
+        await CompleteGoal.InvokeAsync(new ServantGoalArgs()
+        {
+            ServantId = Key,
+            GoalName = goalName
+        });
 
         StateHasChanged();
     }
 
-    async Task OnAddMaterialToGoal(Tuple<string, Material, int> args)
+    async Task OnAddMaterialToGoal(GoalMaterialChangedArgs args)
     {
-        await AddMaterialToGoal.InvokeAsync(new Tuple<int, string, Material, int>(Key, args.Item1, args.Item2, args.Item3));
+        await AddMaterialToGoal.InvokeAsync(new ServantGoalMaterialChangeArgs()
+        {
+            ServantId = Key,
+            GoalName = args.GoalName,
+            Material = args.Material,
+            Quantity = args.Quantity
+        });
     }
 
     async Task ChangeClass(ServantClass newClass)

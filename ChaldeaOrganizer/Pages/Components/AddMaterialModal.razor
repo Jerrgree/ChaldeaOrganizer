@@ -2,9 +2,10 @@
 @using ChaldeaCommon.Extensions
 @using ChaldeaCommon.Data
 @using ChaldeaCommon.Enums
+@using ChaldeaOrganizer.Models
 @using BlazorStrap
 
-@inherits NewItemModalBase<Tuple<Material, int>>
+@inherits NewItemModalBase<MaterialQuantityChangedArgs>
 
 <BSModal IsOpen="@IsOpen" NoBackdrop="true" Class="@ModalClass">
     <BSModalHeader OnClick="Cancel">
@@ -55,7 +56,11 @@
 
     protected override async Task OnAddItem()
     {
-        await AddItem.InvokeAsync(new Tuple<Material, int>(materialInput, quantity));
+        await AddItem.InvokeAsync(new MaterialQuantityChangedArgs()
+        {
+            Material = materialInput,
+            Quantity = quantity
+        });
 
         Reset();
     }

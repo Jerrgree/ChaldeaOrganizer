@@ -1,6 +1,7 @@
 ﻿@using ChaldeaCommon.Models
 @using ChaldeaCommon.Extensions
 @using ChaldeaCommon.Enums
+@using ChaldeaOrganizer.Models
 
 @if (Goal != null && Goal.Materials != null)
 {
@@ -63,10 +64,10 @@
     public Dictionary<Material, int> Inventory { get; set; }
 
     [Parameter]
-    public EventCallback<Tuple<Material, int>> ChangeInventoryMat { get; set; }
+    public EventCallback<MaterialQuantityChangedArgs> ChangeInventoryMat { get; set; }
 
     [Parameter]
-    public EventCallback<Tuple<string, Material, int>> AddMaterialToGoal { get; set; }
+    public EventCallback<GoalMaterialChangedArgs> AddMaterialToGoal { get; set; }
 
     #endregion
     private bool CanCompleteGoal => Goal.Materials.Aggregate(true, (acc, x) => acc && Inventory[x.Key] >= x.Value);
@@ -87,13 +88,22 @@
 
         if (int.TryParse(value.ToString(), out int num))
         {
-            await ChangeInventoryMat.InvokeAsync(new Tuple<Material, int>(material, num));
+            await ChangeInventoryMat.InvokeAsync(new MaterialQuantityChangedArgs()
+            {
+                Material = material,
+                Quantity = num
+            });
         }
     }
 
-    async Task OnAddMaterialToGoal(Tuple<Material, int> material)
+    async Task OnAddMaterialToGoal(MaterialQuantityChangedArgs args)
     {
-        await AddMaterialToGoal.InvokeAsync(new Tuple<string, Material, int>(Key, material.Item1, material.Item2));
+        await AddMaterialToGoal.InvokeAsync(new GoalMaterialChangedArgs()
+        {
+            GoalName = Key,
+            Material = args.Material,
+            Quantity = args.Quantity
+        });
         ShowModal = false;
         StateHasChanged();
     }
