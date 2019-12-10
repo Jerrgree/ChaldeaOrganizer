@@ -1,7 +1,4 @@
 ﻿using Microsoft.AspNetCore.Components;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ChaldeaOrganizer.Pages.Components
@@ -28,8 +25,15 @@ namespace ChaldeaOrganizer.Pages.Components
 
         protected abstract bool CannotAddItem { get; }
 
-        protected abstract Task OnAddItem();
+        protected virtual async Task OnAddItem()
+        {
+            await AddItem.InvokeAsync(BuildNewItem());
+
+            Reset();
+        }
 
         protected abstract void Reset();
+
+        protected abstract T BuildNewItem();
     }
 }

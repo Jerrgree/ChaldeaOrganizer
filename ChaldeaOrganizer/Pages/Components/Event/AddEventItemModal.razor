@@ -38,15 +38,13 @@
 
     protected override bool CannotAddItem => string.IsNullOrWhiteSpace(newShopItem.Item) || newShopItem.Quantity <= 0 || newShopItem.Cost <= 0;
 
-    protected override async Task OnAddItem()
-    {
-        await AddItem.InvokeAsync(newShopItem);
-
-        Reset();
-    }
-
     protected override void Reset()
     {
         newShopItem = new EventCurrencyShopItem();
+    }
+
+    protected override EventCurrencyShopItem BuildNewItem()
+    {
+        return newShopItem;
     }
 }

@@ -54,21 +54,19 @@
             .Where(x => x.GetMaterialLabel().ToLower().Contains(query)));
     }
 
-    protected override async Task OnAddItem()
-    {
-        await AddItem.InvokeAsync(new MaterialQuantityChangedArgs()
-        {
-            Material = materialInput,
-            Quantity = quantity
-        });
-
-        Reset();
-    }
-
     protected override void Reset()
     {
         materialInput = Material.Unkown;
         quantity = 0;
         IsOpen = false;
+    }
+
+    protected override MaterialQuantityChangedArgs BuildNewItem()
+    {
+        return new MaterialQuantityChangedArgs()
+        {
+            Material = materialInput,
+            Quantity = quantity
+        };
     }
 }
