@@ -8,7 +8,7 @@ namespace JsonDataServices
 {
     public abstract class BaseJsonDataService<T> : IDataService<T> where T : new()
     {
-        protected string fileLocation;
+        protected readonly string fileLocation;
 
         /// <summary>
         /// Initializes a new instace of the GameDataService
@@ -21,16 +21,10 @@ namespace JsonDataServices
         {
             if (string.IsNullOrWhiteSpace(fileLocation))
             {
-                throw new ArgumentException("fileLocation must be provided");
+                throw new ArgumentException($"{nameof(fileLocation)} must be provided");
             }
-            if (File.Exists(fileLocation))
-            {
-                this.fileLocation = fileLocation;
-            }
-            else
-            {
-                throw new FileNotFoundException($"{fileLocation} could not be located");
-            }
+
+            this.fileLocation = File.Exists(fileLocation) ? fileLocation : throw new FileNotFoundException($"{fileLocation} could not be located");
         }
 
         public virtual Task<T> RetrieveData()
