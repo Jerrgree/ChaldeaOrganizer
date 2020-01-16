@@ -30,7 +30,25 @@ namespace ChaldeaCommon.Models
 
         public int RunsNeeded => (AmountRemaining > 0 && DropAverage > 0) ? (int)Math.Ceiling((decimal)AmountRemaining / DropAverage) : 0;
 
-        public int AmountOwned { get; set; }
+        private int? _amountOwned;
+
+        public int AmountOwned
+        {
+            get
+            {
+                return _amountOwned.GetValueOrDefault();
+            }
+            set
+            {
+                // Have a null check to avoid adding an instance on initalization
+                if (_amountOwned.GetValueOrDefault() < value)
+                {
+                    CurrencyDropInstance.Add(value);
+                }
+
+                _amountOwned = value;
+            }
+        }
 
         public int DropAverage => (CurrencyDropInstance == null || CurrencyDropInstance.Count == 0) ? 0 : (int)Math.Floor(CurrencyDropInstance.Average());
     }
