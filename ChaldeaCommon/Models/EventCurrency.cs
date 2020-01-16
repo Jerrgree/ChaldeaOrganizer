@@ -41,7 +41,7 @@ namespace ChaldeaCommon.Models
             set
             {
                 // Have a null check to avoid adding an instance on initalization
-                if (_amountOwned.GetValueOrDefault() < value)
+                if (_amountOwned.HasValue && _amountOwned.Value < value)
                 {
                     CurrencyDropInstance.Add(value);
                 }
