@@ -22,7 +22,7 @@
         @if (Shop != null && Shop.Count > 0)
         {
 
-            @foreach (var item in Shop)
+            @foreach (var item in Shop.Where(x => x.Quantity > 0))
             {
                 <tr>
                     <td>@item.Item</td>
