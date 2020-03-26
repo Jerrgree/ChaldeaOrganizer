@@ -10,7 +10,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var currency in Currencies.Where(x => x.HasShop))
+        @foreach (var currency in Currencies)
         {
             <tr style="background-color: @currency.Color">
                 <td>
